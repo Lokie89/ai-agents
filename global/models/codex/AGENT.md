@@ -62,7 +62,9 @@
 
 - Apply `roles.md` while working.
 - Use Planner before implementation to split requirements into feature, domain policy, validation, and commit units.
-- Use Developer during implementation to follow existing structure, code quality, and test conventions.
+- Planner must define success cases, failure cases, and invalid policy cases as test criteria.
+- Use Researcher as part of Planner when benchmarking, references, or external comparisons can improve the plan; keep comparison analysis as planning rationale.
+- Use Developer during implementation to follow TDD first: write or update failing tests before implementation, then make them pass with minimal scoped code.
 - Use Reviewer before final response to check diff, missing tests, validation, conventions, domain-policy gaps, risks, side effects, and expected errors.
 - If Reviewer finds a risk that changes requirements, policy, design, or scope, return to Planner and repeat Planner, Developer, Reviewer.
 - Use Committer only when git commit is explicitly allowed, and split commits by feature, domain policy, tests, refactor, docs, or config.
