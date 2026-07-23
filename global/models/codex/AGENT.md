@@ -57,3 +57,12 @@
 - 실행하지 못한 검증은 이유를 기록한다.
 - 사용하지 않는 코드 정리는 작업 범위 안에서만 수행한다.
 - 변경 내용, 검증 결과, 남은 작업을 `handoff-log.md`에 남긴다.
+
+## Roles
+
+- Apply `roles.md` while working.
+- Use Planner before implementation to split requirements into feature, domain policy, validation, and commit units.
+- Use Developer during implementation to follow existing structure, code quality, and test conventions.
+- Use Reviewer before final response to check diff, missing tests, validation, conventions, domain-policy gaps, risks, side effects, and expected errors.
+- If Reviewer finds a risk that changes requirements, policy, design, or scope, return to Planner and repeat Planner, Developer, Reviewer.
+- Use Committer only when git commit is explicitly allowed, and split commits by feature, domain policy, tests, refactor, docs, or config.

@@ -65,3 +65,7 @@
 - 관련 파일을 읽기 전에는 구현을 추정하지 않는다.
 - 문서, 테스트, 설정 파일을 함께 확인해 작업의 영향을 판단한다.
 - 외부 최신 정보가 필요한 경우 공식 문서나 1차 출처를 우선 확인한다.
+
+## Role Documents
+
+- `global/models/codex/roles.md`: Planner, Developer, Reviewer, Committer role responsibilities and workflow.
