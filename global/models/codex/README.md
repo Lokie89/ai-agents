@@ -24,6 +24,7 @@ Codex 모델은 코드베이스를 읽고, 필요한 변경을 직접 구현하�
 - [도구 목록](./tools.md)
 - [검증 방법](./validation.md)
 - [기록 방식](./handoff-log.md)
+- [하네스](./harness/README.md)
 
 ## 기본 운영 원칙
 

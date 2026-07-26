@@ -11,6 +11,7 @@
 - `global/models/codex/tools.md`: 허용 도구와 금지 도구
 - `global/models/codex/validation.md`: 검증 절차
 - `global/models/codex/handoff-log.md`: 공통 작업 기록과 다음 세션 인계
+- `global/models/codex/harness/`: 상태 전이, 실패 케이스, 산출물 스키마, fixture
 - `local/README.md`: 프로젝트별 문서 위치와 로컬 운영 규칙
 
 ## 코드 작업 시 확인 순서
@@ -69,3 +70,11 @@
 ## Role Documents
 
 - `global/models/codex/roles.md`: Planner, Developer, Reviewer, Committer role responsibilities and workflow.
+
+## Harness Documents
+
+- `global/models/codex/harness/README.md`: 하네스 목적과 사용 방법
+- `global/models/codex/harness/state-machine.md`: 작업 상태와 전이 조건
+- `global/models/codex/harness/failure-cases.md`: 실패 판정 기준
+- `global/models/codex/harness/output-schema.md`: 산출물 필수 구조
+- `global/models/codex/harness/fixtures.md`: 대표 요청과 기대 행동

@@ -65,6 +65,15 @@
 - 문서 구조가 모델 기준 5가지를 모두 포함하는지 확인한다.
 - 다음 세션이 읽어도 작업 목적과 남은 일이 명확한지 확인한다.
 
+## 하네스 검증
+
+- 문서 하네스 자체를 변경했다면 `./scripts/validate-docs.sh`를 실행한다.
+- 요청 유형이 `global/models/codex/harness/fixtures.md`의 어떤 케이스와 가까운지 확인한다.
+- 작업 단계가 `global/models/codex/harness/state-machine.md`의 전이 조건을 만족하는지 확인한다.
+- 응답 또는 기록이 `global/models/codex/harness/output-schema.md`의 필수 항목을 포함하는지 확인한다.
+- `global/models/codex/harness/failure-cases.md`에 해당하는 위반이 없는지 확인한다.
+- 로컬 프로젝트 정책과 글로벌 하네스 기준이 충돌하면 로컬 정책 우선 이유를 기록한다.
+
 ## 청사진 검증
 
 - 실행 명령, 파일 수정, 외부 호출이 발생하지 않았는지 확인한다.
