@@ -7,11 +7,12 @@
 1. `AGENT.md`: 전체 참조 순서와 우선순위를 확인한다.
 2. `goal.md`: 해야 할 일과 하지 말아야 할 일을 확인한다.
 3. `context-map.md`: 필요한 문서와 데이터 위치를 확인한다.
-4. `domain-rules.md`: 도메인 정책을 어떻게 확인하고 수정할지 확인한다.
-5. `model-routing.md`: 역할별 모델 선택 기준을 확인한다.
-6. `tools.md`: 사용할 수 있는 도구와 금지된 도구를 확인한다.
-7. `validation.md`: 작업 전후 검증 기준을 확인한다.
-8. `handoff-log.md`: 이전 작업 기록과 남은 작업을 확인하고, 작업 후 갱신한다.
+4. `project-rules.md`: 프로젝트 진입, 로컬 하네스 필요 여부, 새 프로젝트 생성 기준을 확인한다.
+5. `domain-rules.md`: 도메인 정책을 어떻게 확인하고 수정할지 확인한다.
+6. `model-routing.md`: 역할별 모델 선택 기준을 확인한다.
+7. `tools.md`: 사용할 수 있는 도구와 금지된 도구를 확인한다.
+8. `validation.md`: 작업 전후 검증 기준을 확인한다.
+9. `handoff-log.md`: 이전 작업 기록과 남은 작업을 확인하고, 기록이 필요한 작업이면 작업 후 갱신한다.
 
 ## 우선순위
 
@@ -28,13 +29,15 @@
 - `local/`은 프로젝트별 예외, 문서 위치, 데이터 위치, 추가 제약을 담는다.
 - 글로벌과 로컬이 충돌하면 로컬 정책을 우선하되, 충돌 이유를 기록한다.
 - 로컬 정책이 없으면 글로벌 정책만 따른다.
+- 새 프로젝트 생성, 도메인 정책 추가, 프로젝트별 실행/검증 방식이 필요한데 로컬 정책이 없으면 `project-rules.md`에 따라 로컬 하네스 대화를 먼저 생성한다.
 
 ## 작업 전 규칙
 
-- 특정 명령이나 작업 요청을 받으면 먼저 청사진을 제시한다.
-- 청사진 단계에서는 파일 변경, 명령 실행, 외부 호출을 하지 않는다.
+- 사용자가 청사진, 계획, 설계만 요청하면 먼저 청사진을 제시한다.
+- 청사진만 요청받은 단계에서는 파일 변경, 명령 실행, 외부 호출을 하지 않는다.
 - 청사진에는 작업 목적, 접근 방식, 예상 변경점, 사이드이펙트, 검증 방법을 포함한다.
-- 사용자가 실행을 승인하거나 다음 단계 진행을 명확히 요청한 뒤에만 실제 작업을 수행한다.
+- 사용자가 구현, 수정, 실행을 명확히 요청한 경우에는 관련 파일과 상태를 확인한 뒤 필요한 작업을 수행할 수 있다.
+- 구현 요청이라도 도메인 정책, 데이터 손실, 보안, 권한, 되돌리기 어려운 변경이 불명확하면 구현 전에 질문한다.
 
 ## 모델 선택 규칙
 
@@ -56,7 +59,8 @@
 - 가능한 검증을 실행한다.
 - 실행하지 못한 검증은 이유를 기록한다.
 - 사용하지 않는 코드 정리는 작업 범위 안에서만 수행한다.
-- 변경 내용, 검증 결과, 남은 작업을 `handoff-log.md`에 남긴다.
+- 문서, 정책, 하네스, 장기 작업, 다음 세션 인계가 필요한 변경은 변경 내용, 검증 결과, 남은 작업을 `handoff-log.md`에 남긴다.
+- 단순 질의나 작은 단일 변경처럼 인계 가치가 낮은 작업은 최종 보고에만 기록할 수 있다.
 
 ## Roles
 
@@ -64,7 +68,7 @@
 - Use Planner before implementation to split requirements into feature, domain policy, validation, and commit units.
 - Planner must define success cases, failure cases, and invalid policy cases as test criteria.
 - Use Researcher as part of Planner when benchmarking, references, or external comparisons can improve the plan; keep comparison analysis as planning rationale.
-- Use Developer during implementation to follow TDD first: write or update failing tests before implementation, then make them pass with minimal scoped code.
+- Use Developer during behavior-changing implementation to follow TDD first where practical: write or update failing tests before implementation, then make them pass with minimal scoped code.
 - Use Reviewer before final response to check diff, missing tests, validation, conventions, domain-policy gaps, risks, side effects, and expected errors.
 - If Reviewer finds a risk that changes requirements, policy, design, or scope, return to Planner and repeat Planner, Developer, Reviewer.
 - Use Committer only when git commit is explicitly allowed, and split commits by feature, domain policy, tests, refactor, docs, or config.

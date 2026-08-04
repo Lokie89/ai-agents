@@ -8,13 +8,15 @@
 - `failure-cases.md`: 실패로 판정해야 하는 대표 상황
 - `output-schema.md`: 청사진, 작업 결과, 리뷰 결과의 산출물 구조
 - `fixtures.md`: 요청 예시와 기대 행동
+- `evaluation-rubric.md`: fixture를 실제 응답과 작업 결과에 적용하는 판정 절차
 
 ## 사용 방법
 
 1. 사용자 요청을 `fixtures.md`의 가장 가까운 케이스와 비교한다.
 2. 현재 단계가 `state-machine.md`의 전이 조건을 만족하는지 확인한다.
 3. 응답이나 작업 결과가 `output-schema.md`의 필수 항목을 포함하는지 확인한다.
-4. `failure-cases.md`에 해당하는 위반이 있으면 성공으로 보고하지 않는다.
+4. `evaluation-rubric.md`의 요청 유형과 통과 기준을 적용한다.
+5. `failure-cases.md`에 해당하는 위반이 있으면 성공으로 보고하지 않는다.
 
 ## 하네스 판정 원칙
 

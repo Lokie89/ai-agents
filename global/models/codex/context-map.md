@@ -6,27 +6,31 @@
 - `global/models/codex/README.md`: Codex 모델 개요
 - `global/models/codex/AGENT.md`: 에이전트 실행 진입 문서
 - `global/models/codex/goal.md`: Codex가 수행할 일과 금지 사항
+- `global/models/codex/project-rules.md`: 프로젝트 진입과 로컬 하네스 생성 기준
 - `global/models/codex/domain-rules.md`: 도메인 정책을 확인하고 수정하는 글로벌 규칙
 - `global/models/codex/model-routing.md`: 역할별 모델 선택 기준
 - `global/models/codex/tools.md`: 허용 도구와 금지 도구
 - `global/models/codex/validation.md`: 검증 절차
 - `global/models/codex/handoff-log.md`: 공통 작업 기록과 다음 세션 인계
-- `global/models/codex/harness/`: 상태 전이, 실패 케이스, 산출물 스키마, fixture
+- `global/models/codex/harness/`: 상태 전이, 실패 케이스, 산출물 스키마, fixture, 판정 루브릭
 - `local/README.md`: 프로젝트별 문서 위치와 로컬 운영 규칙
 
 ## 코드 작업 시 확인 순서
 
 1. 사용자 요청의 목표와 완료 기준을 파악한다.
-2. 새 개념, 엔티티, 상태, 정책이 추가되는지 확인한다.
-3. 개념 추가가 있으면 도메인 정의와 정책이 명확한지 확인한다.
-4. 도메인 정책이 불명확하면 구현 전에 질의를 통해 정책을 먼저 세운다.
-5. 청사진이 필요한 요청인지 확인한다.
-6. 청사진 요청이면 실행 없이 계획을 먼저 제시한다.
-7. 사용자가 실행을 승인하면 저장소 구조를 확인한다.
-8. 관련 파일을 검색한다.
-9. 기존 구현 패턴과 테스트 방식을 읽는다.
-10. 필요한 변경만 적용한다.
-11. 검증을 실행하고 결과를 기록한다.
+2. 새 프로젝트 생성인지, 기존 프로젝트 수정인지, 단순 분석인지 분류한다.
+3. 새 개념, 엔티티, 상태, 정책이 추가되는지 확인한다.
+4. 프로젝트별 로컬 하네스가 필요한지 `project-rules.md` 기준으로 판단한다.
+5. 로컬 하네스가 없거나 부족하면 필요한 질문을 먼저 제시한다.
+6. 개념 추가가 있으면 도메인 정의와 정책이 명확한지 확인한다.
+7. 도메인 정책이 불명확하면 구현 전에 질의를 통해 정책을 먼저 세운다.
+8. 청사진만 필요한 요청인지 확인한다.
+9. 청사진, 계획, 설계만 요청받았다면 실행 없이 계획을 먼저 제시한다.
+10. 사용자가 실행을 승인했거나 명확한 구현 요청이면 저장소 구조를 확인한다.
+11. 관련 파일을 검색한다.
+12. 기존 구현 패턴과 테스트 방식을 읽는다.
+13. 필요한 변경만 적용한다.
+14. 검증을 실행하고 결과를 기록한다.
 
 ## 청사진 작성 순서
 
@@ -62,6 +66,7 @@
 
 - 공통 규칙은 `global/`에서 먼저 확인한다.
 - 프로젝트별 예외, 데이터 위치, 추가 제약은 `local/`에서 확인한다.
+- 로컬 규칙이 필요한데 없으면 `project-rules.md`의 로컬 하네스 대화 기준을 따른다.
 - 파일 검색은 우선 `rg` 또는 `rg --files`를 사용한다.
 - 관련 파일을 읽기 전에는 구현을 추정하지 않는다.
 - 문서, 테스트, 설정 파일을 함께 확인해 작업의 영향을 판단한다.
@@ -70,6 +75,7 @@
 ## Role Documents
 
 - `global/models/codex/roles.md`: Planner, Developer, Reviewer, Committer role responsibilities and workflow.
+- `global/models/codex/project-rules.md`: 프로젝트 진입, 새 프로젝트 생성, 로컬 하네스 대화 기준.
 
 ## Harness Documents
 
@@ -78,3 +84,4 @@
 - `global/models/codex/harness/failure-cases.md`: 실패 판정 기준
 - `global/models/codex/harness/output-schema.md`: 산출물 필수 구조
 - `global/models/codex/harness/fixtures.md`: 대표 요청과 기대 행동
+- `global/models/codex/harness/evaluation-rubric.md`: 요청 유형 분류와 판정 절차

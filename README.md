@@ -24,6 +24,7 @@
 | `AGENT.md` | 에이전트가 먼저 읽는 실행 진입 문서 |
 | `goal.md` | 해야 할 일과 하지 말아야 할 일 |
 | `context-map.md` | 필요한 문서와 데이터 위치 |
+| `project-rules.md` | 프로젝트 진입과 로컬 하네스 생성 기준 |
 | `domain-rules.md` | 도메인 정책을 다루는 글로벌 규칙 |
 | `model-routing.md` | 역할별 모델 선택 기준 |
 | `tools.md` | 허용 도구와 금지 도구 |
