@@ -28,6 +28,7 @@ require_text() {
 }
 
 require_file "README.md"
+require_file "CLAUDE.md"
 require_file "global/models/codex/README.md"
 require_file "global/models/codex/AGENT.md"
 require_file "global/models/codex/context-map.md"
@@ -143,6 +144,15 @@ require_text "global/models/claude/AGENT.md" "구현, 수정, 실행을 명확�
 require_text "global/models/claude/roles.md" "동작 변경에는 TDD" "claude behavior-change TDD boundary"
 require_text "global/models/claude/model-routing.md" "type" "claude no type field rule"
 require_text "global/models/claude/model-routing.md" "Workflow" "claude workflow opt-in rule"
+
+require_text "CLAUDE.md" "global/models/claude/AGENT.md" "claude entry pointer"
+require_text "global/models/claude/handoff-log.md" "handoff-archive.md" "claude handoff archive rule"
+require_text "local/_template/handoff-log.md" "handoff-archive.md" "template handoff archive rule"
+require_text "local/sample-project/handoff-log.md" "handoff-archive.md" "sample handoff archive rule"
+require_text "global/models/claude/project-rules.md" "handoff-archive.md" "project rules handoff archive mention"
+require_text "global/models/claude/validation.md" "handoff-archive.md" "validation handoff archive check"
+require_text "global/models/claude/context-map.md" "Explore" "context map explore delegation"
+require_text "local/_template/context-map.md" "실제 파일 경로" "template concrete entrypoint guidance"
 
 if [ "$failures" -ne 0 ]; then
   printf 'document validation failed: %s issue(s)\n' "$failures"
