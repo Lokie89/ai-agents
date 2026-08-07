@@ -12,8 +12,10 @@
 ## 현재 모델
 
 - [Codex 모델](./global/models/codex/README.md)
+- [Claude 모델](./global/models/claude/README.md)
 - [프로젝트별 로컬 문서](./local/README.md)
 - [Codex 하네스](./global/models/codex/harness/README.md)
+- [Claude 하네스](./global/models/claude/harness/README.md)
 
 ## 문서 기준
 
@@ -35,7 +37,7 @@
 
 ## 하네스 기준
 
-Codex 모델은 규칙 문서 외에 하네스 문서를 함께 사용합니다.
+각 모델은 규칙 문서 외에 하네스 문서를 함께 사용합니다.
 
 - `harness/state-machine.md`: 작업 상태와 전이 조건
 - `harness/failure-cases.md`: 실패로 판정해야 하는 위반 사례
