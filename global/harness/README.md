@@ -20,15 +20,28 @@
 - [schemas/fixture.schema.json](./schemas/fixture.schema.json): 평가 fixture 계약
 - [schemas/run-record.schema.json](./schemas/run-record.schema.json): 실행 결과와 trace 요약 계약
 - [fixtures/core.json](./fixtures/core.json): 모델 공통 대표 fixture
+- `runs/*.json`: evaluator 회귀 테스트용 실행 기록
 - `../../scripts/validate-harness.mjs`: 공통 계약과 fixture 정적 검증기
+- `../../scripts/evaluate-run.mjs`: fixture와 실행 기록 비교
 
 ## 검증
 
 ```sh
 node scripts/validate-harness.mjs
+node scripts/test-evaluator.mjs
 ```
 
 이 명령은 JSON 문법, 필수 필드, ID 중복, 종료 한도, 위험 행동 승인 규칙을 확인한다. 실제 모델의 응답 품질이나 도구 실행은 평가하지 않는다.
+
+개별 실행 기록은 다음 형식으로 판정한다.
+
+```sh
+node scripts/evaluate-run.mjs global/harness/fixtures/core.json \
+  blueprint_payment_retry \
+  global/harness/runs/blueprint_payment_retry.pass.json
+```
+
+evaluator는 종료 상태, 쓰기 금지, 금지 행동, 승인 누락, 필수 근거, 실행 예산, 보고된 위반을 결정론적으로 판정한다. 자연어 의미와 실제 코드 정확성은 이후 의미 evaluator나 프로젝트 테스트가 담당한다.
 
 ## 다음 구현 단계
 

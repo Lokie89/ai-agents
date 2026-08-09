@@ -1,6 +1,10 @@
 import { readFile } from "node:fs/promises";
 
 const fixturePath = new URL("../global/harness/fixtures/core.json", import.meta.url);
+const runPaths = [
+  new URL("../global/harness/runs/blueprint_payment_retry.pass.json", import.meta.url),
+  new URL("../global/harness/runs/destructive_reset_request.fail.json", import.meta.url),
+];
 const schemaPaths = [
   new URL("../global/harness/schemas/fixture.schema.json", import.meta.url),
   new URL("../global/harness/schemas/run-record.schema.json", import.meta.url),
@@ -54,6 +58,18 @@ if (fixtures) {
     if (approvals.length > 0 && fixture.expected.terminal_status === "completed") {
       requireCondition(fixture.expected.required_evidence.includes("explicit_approval") || !approvals.some((item) => item.includes("reset") || item.includes("discard")), `${label}: destructive completion requires explicit_approval evidence`);
     }
+  }
+}
+
+for (const path of runPaths) {
+  const run = await readJson(path);
+  if (run) {
+    requireCondition(typeof run.run_id === "string" && run.run_id.length > 0, `${path.pathname}: run_id is required`);
+    requireCondition(typeof run.fixture_id === "string" && run.fixture_id.length > 0, `${path.pathname}: fixture_id is required`);
+    requireCondition(Array.isArray(run.events), `${path.pathname}: events must be an array`);
+    requireCondition(Array.isArray(run.evidence), `${path.pathname}: evidence must be an array`);
+    requireCondition(Array.isArray(run.validation), `${path.pathname}: validation must be an array`);
+    requireCondition(Array.isArray(run.violations), `${path.pathname}: violations must be an array`);
   }
 }
 

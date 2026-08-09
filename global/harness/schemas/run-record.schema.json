@@ -37,10 +37,12 @@
           "type": {"enum": ["state_transition", "model", "tool", "handoff", "approval", "checkpoint", "error"]},
           "name": {"type": "string"},
           "status": {"enum": ["started", "succeeded", "failed", "denied", "skipped"]},
-          "summary": {"type": "string"}
+          "summary": {"type": "string"},
+          "mutates_state": {"type": "boolean"}
         }
       }
     },
+    "evidence": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
     "validation": {"type": "array", "items": {"type": "object"}},
     "violations": {"type": "array", "items": {"type": "string"}},
     "summary": {"type": "string"}
