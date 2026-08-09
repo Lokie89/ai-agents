@@ -16,6 +16,7 @@
 - [프로젝트별 로컬 문서](./local/README.md)
 - [Codex 하네스](./global/models/codex/harness/README.md)
 - [Claude 하네스](./global/models/claude/harness/README.md)
+- [공통 실행·평가 하네스](./global/harness/README.md)
 
 ## 문서 기준
 
@@ -37,7 +38,7 @@
 
 ## 하네스 기준
 
-각 모델은 규칙 문서 외에 하네스 문서를 함께 사용합니다.
+각 모델은 규칙 문서 외에 하네스 문서를 함께 사용합니다. 현재 모델별 하네스는 행동 정책과 판정 기준이고, `global/harness/`는 향후 실행 런타임과 자동 평가가 사용할 공통 데이터 계약입니다.
 
 - `harness/state-machine.md`: 작업 상태와 전이 조건
 - `harness/failure-cases.md`: 실패로 판정해야 하는 위반 사례
@@ -48,4 +49,7 @@
 
 ```sh
 ./scripts/validate-docs.sh
+node scripts/validate-harness.mjs
 ```
+
+현재 저장소는 문서 정책과 정적 평가 계약까지 제공하며, 모델 호출, checkpoint 저장, trace 수집, queue, 배포를 수행하는 프로덕션 런타임은 포함하지 않습니다.

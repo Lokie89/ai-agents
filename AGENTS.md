@@ -4,3 +4,4 @@ Before doing anything else, read `global/models/codex/AGENT.md` — it defines t
 
 - Project-specific context lives under `local/<project-name>/`. If it is missing or incomplete, follow `global/models/codex/project-rules.md`.
 - This repository also hosts a parallel [Claude model](./global/models/claude/README.md); both models share `local/`.
+- Keep this entry point concise. Put detailed durable rules in the linked Codex documents and use nested `AGENTS.md` files only for subtree-specific overrides.

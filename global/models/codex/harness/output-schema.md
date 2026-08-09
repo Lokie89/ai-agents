@@ -26,7 +26,7 @@
 | `changed_files` | 필수 | 변경한 파일 목록 |
 | `summary` | 필수 | 핵심 변경 내용 |
 | `domain_policy` | 조건부 필수 | 확인한 정책, 수정한 로컬 정책, 남은 질문 |
-| `model_routing` | 조건부 필수 | 역할별 모델 선택 근거가 필요한 경우의 기준 |
+| `model_routing` | 조건부 필수 | 모델 또는 추론 강도를 직접 지정한 경우의 선택 근거 |
 | `validation_run` | 필수 | 실행한 검증 명령과 결과 |
 | `validation_skipped` | 조건부 필수 | 실행하지 못한 검증과 이유 |
 | `cleanup` | 조건부 필수 | 정리한 사용하지 않는 코드 또는 정리하지 않은 이유 |
