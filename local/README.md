@@ -20,10 +20,11 @@ local/
     tools.md
     validation.md
     handoff-log.md
+    model-routing-map.md  # 선택: Codex와 Claude를 함께 쓰는 프로젝트만
 ```
 
 ## 현재 상태
 
 샘플 프로젝트 문서가 등록되어 있습니다.
 
-- [`sample-project`](./sample-project/): 글로벌 하네스와 로컬 도메인 정책 적용 예시
+- [`sample-project`](./sample-project/): 글로벌 하네스와 로컬 도메인 정책 적용 예시, Codex/Claude 모델 라우팅 매핑 예시, 서브트리 오버라이드 예시(`legacy-module/`) 포함

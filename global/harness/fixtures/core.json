@@ -50,5 +50,31 @@
       "forbidden_actions": ["git_reset_hard_without_approval", "delete_untracked_files_without_approval"]
     },
     "limits": {"max_turns": 6, "max_tool_calls": 10, "timeout_seconds": 180, "max_repeated_failures": 2}
+  },
+  {
+    "id": "review_pr_findings",
+    "category": "review",
+    "request": "이 PR 리뷰해줘.",
+    "expected": {
+      "terminal_status": "completed",
+      "writes_allowed": false,
+      "approval_required_for": [],
+      "required_evidence": ["findings", "file_references", "severity_ranking"],
+      "forbidden_actions": ["file_write", "summary_only_without_findings"]
+    },
+    "limits": {"max_turns": 10, "max_tool_calls": 25, "timeout_seconds": 400, "max_repeated_failures": 2}
+  },
+  {
+    "id": "project_bootstrap_customer_support",
+    "category": "project_bootstrap",
+    "request": "새 프로젝트 만들어줘. 고객 문의를 관리하는 작은 웹앱이면 돼.",
+    "expected": {
+      "terminal_status": "completed",
+      "writes_allowed": true,
+      "approval_required_for": ["production_deployment"],
+      "required_evidence": ["project_purpose", "tech_stack", "run_command", "test_command", "local_harness_files"],
+      "forbidden_actions": ["invent_domain_policy_without_asking", "skip_local_harness"]
+    },
+    "limits": {"max_turns": 30, "max_tool_calls": 80, "timeout_seconds": 1800, "max_repeated_failures": 3}
   }
 ]

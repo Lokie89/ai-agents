@@ -6,7 +6,7 @@
 - 파일 확인: `Read`
 - 코드 변경: `Edit`(기존 파일 수정 우선), `Write`(신규 파일 또는 전체 재작성)
 - 셸 실행: `Bash`(POSIX 셸 문법), `PowerShell`(Windows 네이티브 문법) — 플랫폼과 스크립트 종류에 맞는 도구를 선택한다
-- 서브에이전트 위임: `Agent`(`Explore`, `Plan`, `general-purpose`, `claude-code-guide`, `statusline-setup` 등)
+- 서브에이전트 위임: `Agent`(`Explore`, `Plan`, `general-purpose`, `claude-code-guide`, `statusline-setup`, 이 저장소에 정의된 `.claude/agents/reviewer.md`/`doc-lint.md` 등)
 - 명시적 오케스트레이션: `Workflow`(opt-in 조건을 충족했을 때만, `model-routing.md`의 Workflow 사용 기준 참조)
 - 작업 추적: `TaskCreate`, `TaskUpdate`, `TaskList`, `TaskGet`, `TaskOutput`, `TaskStop`
 - 사용자 확인/질의: `AskUserQuestion`, `EnterPlanMode`/`ExitPlanMode`

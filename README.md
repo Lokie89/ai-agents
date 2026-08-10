@@ -53,4 +53,6 @@ node scripts/validate-harness.mjs
 node scripts/test-evaluator.mjs
 ```
 
+같은 검사는 `.github/workflows/validate-docs.yml`을 통해 `master` 대상 push와 PR에서도 자동 실행됩니다.
+
 현재 저장소는 문서 정책과 정적 평가 계약까지 제공하며, 모델 호출, checkpoint 저장, trace 수집, queue, 배포를 수행하는 프로덕션 런타임은 포함하지 않습니다.

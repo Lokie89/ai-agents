@@ -113,7 +113,8 @@
 | 범용 다단계 조사/구현 | `general-purpose` | `sonnet`~`opus`, medium~high |
 | Claude Code 자체 사용법 질문 | `claude-code-guide` | `sonnet`, medium |
 | 상태줄 설정 | `statusline-setup` | `sonnet`, low |
-| 코드/보안 리뷰 | 전용 리뷰 관점 또는 `security-review`/`simplify` Skill | `opus`, high |
+| 코드/보안 리뷰 | 전용 리뷰 관점, `.claude/agents/reviewer.md`(이 저장소 예시) 또는 `security-review`/`simplify` Skill | `opus`, high |
+| 이 저장소 문서 하네스 자체 점검 | `.claude/agents/doc-lint.md`(이 저장소 예시) | `sonnet`, low~medium |
 
 역할별 기본값보다 작업 조건 루브릭이 우선한다. 예를 들어 `general-purpose`에 위임했더라도 마이그레이션이나 보안 변경을 다루면 `opus`와 `xhigh`로 승격한다.
 
@@ -142,6 +143,8 @@ model: opus
 ---
 ```
 
+실제 정의 예시는 `.claude/agents/reviewer.md`와 `.claude/agents/doc-lint.md`를 참조한다.
+
 - `model`은 별칭, 풀 모델 ID, `inherit` 중 하나다.
 - `model`을 생략하면 `inherit`로 처리한다.
 - `type` 필드는 사용하지 않는다.
@@ -165,4 +168,4 @@ model_aliases:
   fable: <full-model-id>
 ```
 
-같은 저장소에서 [Codex](../codex/model-routing.md)도 함께 쓰는 환경이라면, Codex의 `fast/balanced/deep/max` 별칭과 이 문서의 별칭을 로컬 설정에서 상호 매핑해 둔다(예: `fast` ↔ `haiku`, `balanced` ↔ `sonnet`, `deep` ↔ `opus`, `max` ↔ `opus`+`max`).
+같은 저장소에서 [Codex](../codex/model-routing.md)도 함께 쓰는 환경이라면, Codex가 문서에서 쓰는 단순/일반/복잡/고위험 등급과 이 문서의 별칭을 로컬 설정에서 상호 매핑해 둔다(예: 단순 ↔ `haiku`, 일반 ↔ `sonnet`, 복잡 ↔ `opus`, 고위험 ↔ `opus`+`xhigh`/`max`). 작성 예시는 `local/_template/model-routing-map.md`(템플릿)와 `local/sample-project/model-routing-map.md`(작성 예시)를 참조한다.
