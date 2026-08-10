@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-10
+
+- 목표: Codex 문서가 2026-08-09에 먼저 현행화된 내용(`fae1bb8`, `df5faaf`, `de5fb7b`) 중 Claude 문서에도 반영할 게 있는지 대조하고 반영한다.
+- 변경: (1) `EnterPlanMode` 툴이 실제로 Plan Mode에서 `Glob`/`Grep`/`Read` 탐색을 허용한다는 사실에 맞춰, `AGENT.md`/`goal.md`/`harness/evaluation-rubric.md`/`harness/fixtures.md`/`harness/failure-cases.md`/`validation.md`의 청사진 단계 서술을 "명령 실행을 전혀 하지 않는다"에서 "파일·외부 상태 변경은 하지 않되 계획 근거 확보를 위한 읽기 전용 조사는 허용한다"로 정정했다. (2) 루트 `CLAUDE.md`에 Codex `AGENTS.md`와 동일한 "진입점을 간결하게 유지하고 서브트리 예외는 중첩 `CLAUDE.md`로 둔다" 원칙을 추가했다. (3) `model-routing.md`에 병렬 서브에이전트가 같은 파일을 동시에 쓰지 않도록 하는 절과, `Agent`/`Workflow`의 `isolation: "worktree"` 사용 기준을 추가하고 `tools.md`에도 대응 문구를 추가했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs` 모두 통과.
+- 남은 작업: Codex 쪽 `model-routing.md`가 실제 모델 ID/`.codex/agents/*.toml` 기준으로 크게 개편됐지만, 이는 Codex 고유의 설정 방식(가상의 별칭 사용 문제)을 고친 것이라 Claude에는 적용하지 않았다(Claude의 별칭 `haiku`/`sonnet`/`opus`/`fable`은 실제 런타임 별칭이라 문제가 없었음).
+- 주의 사항: 앞으로 Codex/Claude 중 한쪽 문서를 고칠 때는 반대쪽에도 같은 종류의 부정확성이 있는지 확인하는 습관을 들인다.
+
 ### 2026-08-07
 
 - 목표: 저장소에 이미 있는 [Codex 모델](../codex/README.md) 문서 세트와 같은 구조로, Claude Code 하네스(Plan Mode, 서브에이전트, Skill, Workflow, 권한 프롬프트)에 맞춘 Claude 모델 문서 세트를 만든다.
