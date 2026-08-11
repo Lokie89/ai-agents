@@ -17,6 +17,7 @@ local/
     goal.md
     context-map.md
     domain-policy.md
+    architecture.md
     tools.md
     validation.md
     handoff-log.md

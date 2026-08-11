@@ -34,7 +34,7 @@
 | `validation.md` | 검증 체크리스트 |
 | `handoff-log.md` | 작업 기록과 다음 세션 인계 |
 
-사람은 각 모델의 `README.md`를 먼저 보면 되고, 에이전트는 `AGENT.md`를 먼저 보면 됩니다. 실제 프로젝트의 도메인 정책은 `local/<project-name>/domain-policy.md`에 둡니다.
+사람은 각 모델의 `README.md`를 먼저 보면 되고, 에이전트는 `AGENT.md`를 먼저 보면 됩니다. 실제 프로젝트의 도메인 정책은 `local/<project-name>/domain-policy.md`, 아키텍처 청사진은 `local/<project-name>/architecture.md`에 둡니다.
 
 ## 하네스 기준
 

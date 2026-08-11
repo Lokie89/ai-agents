@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-12 (로컬 아키텍처 청사진 추가)
+
+- 목표: 프로젝트별 로컬 하네스가 도메인 정책뿐 아니라 아키텍처 청사진도 먼저 확인하도록 기준을 확장한다.
+- 변경: `local/_template/architecture.md`와 `local/sample-project/architecture.md`를 추가했다. Codex/Claude 프로젝트 규칙, 목표, AGENT, 컨텍스트 지도, 검증, 하네스 산출물, fixture, 실패 케이스에 `architecture.md` 확인과 청사진 질문 기준을 연결했다. `local/README.md`, 샘플 context-map, 루트 README, 문서 검증 스크립트도 새 필수 문서에 맞췄다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 실제 프로젝트에 적용하면서 아키텍처 질문 항목이 과하거나 부족한지 사례를 보고 조정할 수 있다.
+- 주의 사항: 아키텍처는 현재 기준의 청사진이며 모든 항목을 한 번에 확정하지 않는다. 구현 전제에 직접 영향을 주는 항목만 질문으로 승격하고, 나머지는 `미정` 또는 `해당 없음`으로 기록한다.
+
 ### 2026-08-11 (숙의형 멀티 에이전트 패턴 추가)
 
 - 목표: 여러 에이전트가 독립 의견, 비판, 수정, 합성, 검증 라운드로 더 나은 결론을 만드는 공통 패턴을 문서화한다.
@@ -49,11 +57,3 @@
 - 검증: 공식 Codex 매뉴얼의 Best practices, Subagents, AGENTS.md 섹션과 대조했다. `node scripts/validate-harness.mjs`, `bash scripts/validate-docs.sh`, `git diff --check`를 실행한다.
 - 남은 작업: 실제 커스텀 에이전트를 도입할 때만 `.codex/config.toml`과 `.codex/agents/*.toml`을 추가한다.
 - 주의 사항: 모델 ID와 지원 추론 강도는 제품·계정·시점에 따라 바뀔 수 있으므로 글로벌 문서에 특정 ID를 영구 기본값으로 고정하지 않는다.
-
-### 2026-08-09
-
-- 목표: Claude 문서의 개선 사항 중 Codex에도 공통으로 유효한 운영 규칙을 선별해 반영한다.
-- 변경: 루트 `AGENTS.md` 진입점을 추가했다. Codex 내장 안전 규칙 우선, 공유 상태 변경 사전 확인, hook/서명 우회 금지, 모델 간 `local/` 공유 원칙, handoff 최근 5개 보관 및 아카이브 규칙, UI/프론트엔드 실동작 검증 기준을 Codex 문서에 추가했다. Claude 전용 도구명과 Workflow 규칙은 옮기지 않았다.
-- 검증: `bash scripts/validate-docs.sh`로 문서 구조와 핵심 참조를 확인한다.
-- 남은 작업: `handoff-archive.md`는 현재 기록이 5개를 초과할 때 생성한다.
-- 주의 사항: 모델별 도구 이름과 실행 방식은 각 모델 문서에만 두고, 공유 `local/` 문서는 프로젝트 기준으로 유지한다.

@@ -17,6 +17,10 @@
 
 - `domain-policy.md`:
 
+## 아키텍처 문서
+
+- `architecture.md`:
+
 ## 검증 문서
 
 - `validation.md`:

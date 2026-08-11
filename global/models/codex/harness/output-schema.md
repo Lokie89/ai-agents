@@ -11,6 +11,7 @@
 | `purpose` | 필수 | 사용자의 요청을 한 문장으로 재정의 |
 | `scope` | 필수 | 포함 범위와 제외 범위 |
 | `domain_policy` | 조건부 필수 | 새 개념, 상태, 권한, 생명주기 관련 확인 내용 |
+| `architecture_policy` | 조건부 필수 | 기술 스택, 배포 구조, 데이터 저장소, 통신 방식, 운영 전제 관련 확인 내용 |
 | `approach` | 필수 | 단계별 작업 방식 |
 | `expected_changes` | 필수 | 바뀔 파일, 동작, 문서 구조 |
 | `side_effects` | 필수 | 기능, 데이터, 성능, 보안, 운영 영향 |
@@ -42,6 +43,7 @@
 | `local_harness` | 필수 | 생성 또는 갱신한 `local/<project-name>/` 문서 |
 | `run_command` | 필수 | 사용자가 바로 실행할 명령 |
 | `test_command` | 조건부 필수 | 테스트 또는 대체 검증 명령 |
+| `architecture_blueprint` | 필수 | 현재 기준의 기술 스택, 배포 단위, 데이터 저장소, 운영 전제와 미정 항목 |
 | `env_requirements` | 조건부 필수 | 필요한 환경변수와 비밀값 기록 방식 |
 | `implemented_flow` | 필수 | 동작하는 핵심 흐름 |
 | `known_unknowns` | 조건부 필수 | `미정`으로 남긴 정책, 기능, 검증 |
@@ -55,6 +57,7 @@
 | `project_type` | 필수 | 새 프로젝트, 기존 프로젝트, 단순 분석 중 분류 |
 | `missing_local_context` | 필수 | 없는 로컬 문서나 부족한 정책 |
 | `required_questions` | 필수 | 구현 전에 답이 필요한 최소 질문 |
+| `architecture_questions` | 조건부 필수 | 아키텍처 청사진이 없거나 부족할 때 필요한 기술 스택, 서버 구성, 데이터 저장소, 운영 질문 |
 | `assumptions_allowed` | 조건부 필수 | 사용자가 이미 준 정보로 확정 가능한 항목 |
 | `unknowns_to_record` | 조건부 필수 | 답이 없으면 `미정`으로 남길 항목 |
 | `local_files_to_create` | 조건부 필수 | 생성 또는 갱신할 `local/<project-name>/` 문서 |
