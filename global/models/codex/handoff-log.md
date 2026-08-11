@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-11 (숙의형 멀티 에이전트 패턴 추가)
+
+- 목표: 여러 에이전트가 독립 의견, 비판, 수정, 합성, 검증 라운드로 더 나은 결론을 만드는 공통 패턴을 문서화한다.
+- 변경: `global/harness/deliberation.md`를 추가해 Orchestrator, Proposer, Critic, Alternative, Synthesizer, Verifier 역할과 라운드, 산출물 형식, 실패 케이스, 종료 조건을 정의했다. 공통 하네스 README/architecture, 루트 README, Codex/Claude 모델 라우팅과 검증 문서, 모델별 실패 케이스, 문서 검증 스크립트에 참조를 연결했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, PowerShell 필수 문구 확인, `git diff --check`가 통과했다. 기존 CRLF 줄끝 문제는 `scripts/validate-docs.sh`를 LF로 정리해 해결했다.
+- 남은 작업: 실제 런타임을 만들 때 `AgentOpinion`, `Critique`, `FinalSynthesis` 같은 JSON 스키마와 샘플 run record를 추가할 수 있다.
+- 주의 사항: 이 변경은 런타임 구현이 아니라 공통 설계 계약이다. 특정 도메인 판단은 hard gate와 프로젝트 정책이 우선하고, 숙의는 애매한 영역의 의견 품질 개선에 사용한다.
+
 ### 2026-08-11 (Codex 운영 공백 보완)
 
 - 목표: 현재 문서 기준에서 Codex 작업 시 빠지기 쉬운 실행 환경, 하위 지침, 사용자 변경 보호, 최신 정보 검증, 최종 리뷰 기준을 보완한다.
@@ -49,11 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`로 문서 구조와 핵심 참조를 확인한다.
 - 남은 작업: `handoff-archive.md`는 현재 기록이 5개를 초과할 때 생성한다.
 - 주의 사항: 모델별 도구 이름과 실행 방식은 각 모델 문서에만 두고, 공유 `local/` 문서는 프로젝트 기준으로 유지한다.
-
-### 2026-08-04
-
-- 목표: Codex 운영 규칙에서 청사진, handoff, TDD, 프로젝트 진입 기준을 실제 작업 흐름에 맞게 조정한다.
-- 변경: 청사진만 요청받은 경우와 명확한 구현 요청을 분리했다. handoff 기록은 문서, 정책, 하네스, 장기 작업처럼 인계 가치가 있는 변경에 필수로 두고 작은 단일 변경은 최종 보고로 대체할 수 있게 했다. TDD 기준은 동작 변경 중심으로 완화하고 문서, 설정 변경에는 대체 검증 기준을 사용할 수 있게 했다. `project-rules.md`를 추가해 로컬 규칙이 없거나 부족한 프로젝트에서 로컬 하네스 대화를 생성하고, 필요한 경우 `local/<project-name>/` 문서를 만들도록 기준을 정의했다. `local/_template/`에 `goal.md`, `context-map.md`, `tools.md`, `validation.md`, `handoff-log.md` 템플릿을 추가했다. 새 프로젝트 기본 완료 체크리스트, 프로젝트 유형별 최소 기준, 프로젝트 생성 결과 보고 스키마를 추가했다. 문서 검증 스크립트에 새 경계 규칙, 프로젝트 규칙, 로컬 템플릿, 하네스 fixture 참조 확인을 추가했다.
-- 검증: sandbox 내부 `bash scripts/validate-docs.sh`는 `E_ACCESSDENIED`로 실패했다. 권한 밖에서 같은 명령을 다시 실행해 `document validation passed`를 확인했고, PowerShell 대체 검증으로 필수 파일과 핵심 문구도 확인했다.
-- 남은 작업: 필요하면 Markdown 링크 전체 검사 스크립트를 별도 추가할 수 있다.
-- 주의 사항: 명확한 구현 요청은 실행할 수 있지만, 도메인 정책, 보안, 권한, 데이터 손실, 되돌리기 어려운 변경이 불명확하면 구현 전에 질문해야 한다. 새 프로젝트 생성이나 프로젝트별 실행/검증 방식이 필요한 작업은 로컬 하네스 필요 여부를 먼저 판단해야 한다.

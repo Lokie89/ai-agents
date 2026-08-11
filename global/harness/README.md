@@ -7,6 +7,7 @@
 현재 구현된 범위는 문서 정책과 로컬 검증기다.
 
 - 에이전트 하네스 계층과 책임
+- 숙의형 멀티 에이전트 패턴
 - 구조화된 평가 fixture
 - 실행 기록(run record) 스키마
 - 종료 조건과 승인 상태 표현
@@ -17,6 +18,7 @@
 ## 구성
 
 - [architecture.md](./architecture.md): 일반적인 에이전트 구성과 현재 구현 경계
+- [deliberation.md](./deliberation.md): 독립 의견, 비판, 수정, 합성, 검증 라운드 기반 숙의 패턴
 - [schemas/fixture.schema.json](./schemas/fixture.schema.json): 평가 fixture 계약
 - [schemas/run-record.schema.json](./schemas/run-record.schema.json): 실행 결과와 trace 요약 계약
 - [fixtures/core.json](./fixtures/core.json): 모델 공통 대표 fixture

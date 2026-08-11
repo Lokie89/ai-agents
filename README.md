@@ -44,6 +44,7 @@
 - `harness/failure-cases.md`: 실패로 판정해야 하는 위반 사례
 - `harness/output-schema.md`: 청사진, 구현 결과, 리뷰 결과의 필수 산출물
 - `harness/fixtures.md`: 대표 요청과 기대 행동
+- `global/harness/deliberation.md`: 독립 의견, 비판, 수정, 합성, 검증 라운드 기반 숙의형 멀티 에이전트 패턴
 
 문서 하네스의 필수 파일과 핵심 참조는 아래 명령으로 확인합니다.
 
