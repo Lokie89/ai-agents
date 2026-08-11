@@ -41,3 +41,11 @@
 - 검증: `bash scripts/validate-docs.sh`로 문서 구조와 핵심 참조를 확인한다.
 - 남은 작업: `handoff-archive.md`는 현재 기록이 5개를 초과할 때 생성한다.
 - 주의 사항: 모델별 도구 이름과 실행 방식은 각 모델 문서에만 두고, 공유 `local/` 문서는 프로젝트 기준으로 유지한다.
+
+## 2026-08-09 (Codex 문서 현행화)
+
+- 목표: 현재 Codex 문서를 공식 Codex 운영 방식과 대조해 실행 경계와 설정 정확성을 보완한다.
+- 변경: 계획 단계에서 읽기 전용 조사와 안전한 진단은 허용하되 파일·외부 상태 변경은 금지하도록 경계를 바로잡았다. 추상 모델 별칭과 YAML frontmatter 예시를 제거하고 실제 모델 ID, `model_reasoning_effort`, `.codex/agents/<name>.toml`, `[agents]` 설정 기준으로 모델 라우팅 문서를 개편했다. `AGENTS.md` 계층을 간결하게 유지하는 원칙, 메인 컨텍스트 절약, 읽기 중심 서브에이전트 우선, 동시 쓰기 충돌 방지 기준을 추가했다. `global/harness/`에 런타임 계층, 종료·재시도·승인·관측성 계약, JSON Schema, 공통 fixture를 추가하고 무의존성 정적 검증기를 연결했다.
+- 검증: 공식 Codex 매뉴얼의 Best practices, Subagents, AGENTS.md 섹션과 대조했다. `node scripts/validate-harness.mjs`, `bash scripts/validate-docs.sh`, `git diff --check`를 실행한다.
+- 남은 작업: 실제 커스텀 에이전트를 도입할 때만 `.codex/config.toml`과 `.codex/agents/*.toml`을 추가한다.
+- 주의 사항: 모델 ID와 지원 추론 강도는 제품·계정·시점에 따라 바뀔 수 있으므로 글로벌 문서에 특정 ID를 영구 기본값으로 고정하지 않는다.

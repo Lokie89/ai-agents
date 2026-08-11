@@ -16,3 +16,19 @@
 - 검증: `bash scripts/validate-docs.sh` 통과 확인.
 - 남은 작업: `handoff-archive.md`는 실제로 5개를 초과하는 시점에 생성하면 된다(현재는 아직 만들 필요 없음). Codex 쪽 문서에도 같은 아카이브 규칙과 CLAUDE.md 상당 진입점을 적용할지는 별도 논의가 필요하다.
 - 주의 사항: `CLAUDE.md`는 세션마다 자동으로 로드되므로 내용을 최소한으로 유지해야 한다. 항목을 추가할 때마다 이 파일이 커지지 않도록 주의한다.
+
+## 2026-08-10
+
+- 목표: Codex 문서가 2026-08-09에 먼저 현행화된 내용(`fae1bb8`, `df5faaf`, `de5fb7b`) 중 Claude 문서에도 반영할 게 있는지 대조하고 반영한다.
+- 변경: (1) `EnterPlanMode` 툴이 실제로 Plan Mode에서 `Glob`/`Grep`/`Read` 탐색을 허용한다는 사실에 맞춰, `AGENT.md`/`goal.md`/`harness/evaluation-rubric.md`/`harness/fixtures.md`/`harness/failure-cases.md`/`validation.md`의 청사진 단계 서술을 "명령 실행을 전혀 하지 않는다"에서 "파일·외부 상태 변경은 하지 않되 계획 근거 확보를 위한 읽기 전용 조사는 허용한다"로 정정했다. (2) 루트 `CLAUDE.md`에 Codex `AGENTS.md`와 동일한 "진입점을 간결하게 유지하고 서브트리 예외는 중첩 `CLAUDE.md`로 둔다" 원칙을 추가했다. (3) `model-routing.md`에 병렬 서브에이전트가 같은 파일을 동시에 쓰지 않도록 하는 절과, `Agent`/`Workflow`의 `isolation: "worktree"` 사용 기준을 추가하고 `tools.md`에도 대응 문구를 추가했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs` 모두 통과.
+- 남은 작업: Codex 쪽 `model-routing.md`가 실제 모델 ID/`.codex/agents/*.toml` 기준으로 크게 개편됐지만, 이는 Codex 고유의 설정 방식(가상의 별칭 사용 문제)을 고친 것이라 Claude에는 적용하지 않았다(Claude의 별칭 `haiku`/`sonnet`/`opus`/`fable`은 실제 런타임 별칭이라 문제가 없었음).
+- 주의 사항: 앞으로 Codex/Claude 중 한쪽 문서를 고칠 때는 반대쪽에도 같은 종류의 부정확성이 있는지 확인하는 습관을 들인다.
+
+## 2026-08-10 (문서 하네스 보강)
+
+- 목표: 문서 리뷰에서 나온 개선 후보(로컬 샘플 누락, CI 미연동, 서브에이전트/모델 매핑 예시 부재, 구조화 fixture 커버리지, 서브트리 오버라이드 예시 부재)를 모두 반영한다.
+- 변경: `local/sample-project/tools.md`를 추가해 로컬 하네스 필수 파일 6개를 채웠다. `.github/workflows/validate-docs.yml`을 추가해 `validate-docs.sh`/`validate-harness.mjs`/`test-evaluator.mjs`를 push/PR에서 자동 실행하도록 했다(README에도 명시). `.claude/agents/reviewer.md`, `.claude/agents/doc-lint.md` 예시 서브에이전트를 추가하고 `model-routing.md`/`tools.md`에서 참조했다. `local/_template/model-routing-map.md`(템플릿)와 `local/sample-project/model-routing-map.md`(예시)를 추가해 Codex/Claude를 함께 쓰는 프로젝트의 모델 매핑 방법을 보여주고, 이 과정에서 `model-routing.md`에 남아 있던 stale한 Codex 별칭(`fast/balanced/deep/max`, 2026-08-09 Codex 개편에서 이미 폐기됨) 참조도 함께 고쳤다. `global/harness/fixtures/core.json`에 `review`/`project_bootstrap` 카테고리 fixture 2개를 추가해 스키마가 정의한 카테고리 커버리지를 넓혔다. `local/sample-project/legacy-module/`에 중첩 `CLAUDE.md`/`AGENTS.md` 서브트리 오버라이드 예시를 추가하고 `goal.md`/`context-map.md`/`local/README.md`에서 연결했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture 통과), `node scripts/test-evaluator.mjs` 모두 통과.
+- 남은 작업: `.claude/agents/*.md`와 `local/*/model-routing-map.md`는 실제 사용 예시가 쌓이면 내용을 더 구체화할 수 있다. 구조화 fixture는 여전히 prose fixture(Claude 11개)보다 적으므로 필요하면 계속 늘릴 수 있다.
+- 주의 사항: `local/sample-project/`는 실행 코드가 없는 문서 전용 샘플이라는 전제를 유지해야 한다. `legacy-module/`의 오버라이드 내용은 가상 예시이며 실제 정책이 아니다.
