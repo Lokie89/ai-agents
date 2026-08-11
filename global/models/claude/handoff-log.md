@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-12 (Codex 운영 기준 보완 대조)
+
+- 목표: Codex 쪽 `7a00434`(하위 `AGENTS.md`, PowerShell 인코딩, dirty worktree 보호, 최신 정보 확인, hook 부재 시 수동 Reviewer 체크 보완) 커밋을 Claude 문서와 대조해 반영할 게 있는지 확인한다.
+- 변경: 대부분은 이미 Claude 쪽에 동등하거나 더 강한 형태로 있었다(중첩 `CLAUDE.md`는 Claude Code가 네이티브로 자동 로드하므로 별도 규칙 불필요, `Read` 툴이 인코딩을 처리, `사용자 변경 보호 위반`/`최신 정보 사용 위반` 실패 케이스 기존 존재, Codex에는 없는 Stop hook을 Claude는 이미 보유). 실제로 빠진 항목 2개만 반영했다: `harness/failure-cases.md`의 "사용자 변경 보호 위반"에 "커밋이나 스테이징을 수행하면서 현재 작업과 무관한 변경을 포함했다"를 추가했고, `validation.md`의 "결과 보고 형식"에 "최신 정보나 외부 사실을 확인했다면 사용한 공식 문서 또는 1차 출처"를 추가했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture 통과), `node scripts/test-evaluator.mjs`(2 케이스 통과), `git diff --check` 모두 통과.
+- 남은 작업: 없음.
+- 주의 사항: Codex와 Claude는 실행 환경이 달라(네이티브 중첩 CLAUDE.md 로드, Stop hook 존재, Bash 툴이 Git Bash를 문제없이 사용) 모든 항목을 1:1로 옮길 필요는 없다. 대조할 때마다 "Codex에 없는 기능을 보완한 항목"과 "Codex의 샌드박스/환경 제약 때문에 추가된 항목"을 구분해서 판단해야 한다.
+
 ### 2026-08-12 (로컬 아키텍처 청사진 추가)
 
 - 목표: 프로젝트별 로컬 하네스가 도메인 정책뿐 아니라 아키텍처 청사진도 먼저 확인하도록 기준을 확장한다.
