@@ -26,6 +26,8 @@
 - 남은 작업: 실제 새 프로젝트 시작 세션에서 agent가 청사진 후 승인 대기하는지 사례로 확인할 수 있다.
 - 주의 사항: 사용자가 "바로 파일 생성해", "청사진 생략하고 구현해"처럼 명시적으로 승인한 경우에는 구현으로 넘어갈 수 있지만, 기본값은 청사진 선행이다.
 
+같은 문서, 다른 세션 후속 작업: 사용자가 Codex 세션에서 만든 이 커밋의 Claude 쪽 내용을 검토해달라고 요청해 확인했다. `AGENT.md`/`goal.md`/`project-rules.md`/`context-map.md`/`state-machine.md`/`evaluation-rubric.md`/`output-schema.md`/`validation.md`/`handoff-archive.md` 변경은 Claude 도구(`EnterPlanMode`/`ExitPlanMode`/`AskUserQuestion`/`TaskCreate`) 기준과 일치했고 상태 전이에도 모순이 없었다. 다만 `harness/fixtures.md`의 Fixture 10 "실패 판정"에 이전 버전(승인 없이도 바로 구현하던 시절) 문구 "프로젝트를 만들었지만 실행 명령이나 동작하는 핵심 흐름을 보고하지 않았다"가 그대로 남아 있었다 — 이 fixture의 새 기대 행동은 승인 전 파일 생성을 금지하므로 "만든 프로젝트"가 있을 수 없어 자기 모순이었다. "청사진에 예상 핵심 흐름(문의 등록, 조회, 상태 변경)이나 실행/검증 명령 후보가 없다"로 고쳤다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 모두 통과 확인. 같은 leftover 문구가 `global/models/codex/harness/fixtures.md`의 동일 Fixture 10(216행)에도 남아 있어, 사용자 확인 후 같은 문장으로 함께 고쳤다.
+
 ### 2026-08-12 (Codex 운영 기준 보완 대조)
 
 - 목표: Codex 쪽 `7a00434`(하위 `AGENTS.md`, PowerShell 인코딩, dirty worktree 보호, 최신 정보 확인, hook 부재 시 수동 Reviewer 체크 보완) 커밋을 Claude 문서와 대조해 반영할 게 있는지 확인한다.
