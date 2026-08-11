@@ -132,6 +132,7 @@
 - Workflow 실행 규모는 세션 설정(예: `/config`의 workflow size guideline)을 따르며, opt-in이 있어도 규모는 요청에 맞춰 과도하게 키우지 않는다.
 - 더 나은 의견 형성이 목표인 숙의형 작업은 공통 하네스의 `global/harness/deliberation.md`를 따라 독립 의견, 비판, 수정, 합성, 검증 라운드를 구분한다.
 - 숙의형 작업의 최종 판단은 단순 다수결이 아니라 근거 품질, 정책 적합성, 반대 근거, 남은 리스크를 기준으로 한다.
+- 숙의형 패턴 자체는 `Workflow` opt-in의 하위 항목이 아니다. 역할을 `proposer`/`critic`/`synthesizer` 정도로 줄일 수 있는 작은 규모라면, opt-in 없이 `Agent`를 여러 번(1라운드는 서로의 결과를 안 보게 병렬로) 호출해 라운드를 직접 진행해도 된다. 라운드를 스크립트로 강제해야 하거나 규모가 커지면 그때 opt-in을 확인하고 `Workflow`로 승격한다.
 
 ## frontmatter 규칙
 
