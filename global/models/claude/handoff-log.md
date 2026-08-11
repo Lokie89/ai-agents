@@ -21,8 +21,8 @@
 ### 2026-08-11 (숙의형 멀티 에이전트 패턴 연결)
 
 - 목표: 공통 하네스에 추가된 숙의형 멀티 에이전트 패턴을 Claude 라우팅과 검증 기준에도 연결한다.
-- 변경: `global/harness/deliberation.md`를 공통 패턴으로 두고, Claude `model-routing.md`의 Workflow 사용 기준과 `validation.md`의 숙의형 멀티 에이전트 검증 기준에서 참조했다. 모델별 실패 케이스에 라운드 미구분과 단순 다수결 판정을 위반으로 추가했다.
-- 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, 공통 Node 검증, PowerShell 문구 확인, `git diff --check`가 통과했다. 기존 Windows CRLF 줄끝 문제는 `scripts/validate-docs.sh`를 LF로 정리해 해결했다.
+- 변경: `global/harness/deliberation.md`를 공통 패턴으로 두고, Claude `model-routing.md`의 Workflow 사용 기준과 `validation.md`의 숙의형 멀티 에이전트 검증 기준에서 참조했다. 모델별 실패 케이스에 라운드 미구분, 단순 다수결 판정, 라운드별 요약 로그 누락을 위반으로 추가했다.
+- 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, 공통 Node 검증, PowerShell 문구 확인, `git diff --check`가 통과했다. 기존 Windows CRLF 줄끝 문제는 `scripts/validate-docs.sh`를 LF로 정리해 해결했고, 라운드별 요약 로그 문구도 문서 검증 스크립트에 추가했다.
 - 남은 작업: 실제 Claude Workflow로 구현할 때는 opt-in 조건과 세션 workflow size guideline을 별도로 확인해야 한다.
 - 주의 사항: Claude의 Workflow opt-in 원칙은 유지한다. 숙의형 패턴은 Workflow 사용을 자동 허용하지 않고, 사용자가 명시적으로 오케스트레이션을 원할 때 적용한다.
 

@@ -95,6 +95,7 @@ require_text "global/harness/README.md" "run-record.schema.json" "shared run rec
 require_text "global/harness/README.md" "deliberation.md" "shared deliberation readme reference"
 require_text "global/harness/deliberation.md" "## 라운드" "shared deliberation rounds"
 require_text "global/harness/deliberation.md" "## 산출물 형식" "shared deliberation output schema"
+require_text "global/harness/deliberation.md" "## 라운드 요약 로그" "shared deliberation summary log"
 require_text "AGENTS.md" "global/models/codex/AGENT.md" "codex entry pointer"
 require_text "README.md" "./global/models/claude/README.md" "root claude model link"
 require_text "README.md" "./global/models/claude/harness/README.md" "root claude harness link"

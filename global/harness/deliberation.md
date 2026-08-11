@@ -92,6 +92,40 @@ received
 }
 ```
 
+## 라운드 요약 로그
+
+Orchestrator는 각 라운드가 끝날 때 사람이 빠르게 읽을 수 있는 짧은 요약을 남긴다. 원문 대화 전체를 보관하지 않고, 결정에 영향을 준 핵심 주장과 변경만 기록한다.
+
+```md
+## Deliberation Summary
+
+### Round 1: Independent Analysis
+- proposer: 초기안은 A. 핵심 근거는 X.
+- critic: 아직 비판 없음.
+- alternative: 대안은 B. 장점은 Y.
+
+### Round 2: Critique
+- critic: A는 rollback 조건이 약함.
+- proposer: 지적 수용. A에 rollback 조건 추가 필요.
+
+### Round 3: Revision
+- proposer: A를 A'로 수정.
+- alternative: B는 비용 문제로 보조안으로 낮춤.
+
+### Final Synthesis
+- decision: A' 채택.
+- why: X 근거가 강하고, critic이 지적한 rollback 조건을 보완함.
+- remaining risks: Z는 추가 검증 필요.
+```
+
+요약 로그는 아래 기준을 지킨다.
+
+- 라운드당 3~5줄을 기본으로 한다.
+- 에이전트별 원문 전체를 붙이지 않는다.
+- 결론에 영향을 준 주장, 반박, 수정, 남은 리스크만 남긴다.
+- 합의되지 않은 쟁점은 삭제하지 않고 `remaining risks`나 `follow_up_questions`에 남긴다.
+- 사용자가 상세 기록을 요청하지 않는 한 내부 사고 과정처럼 장황한 대화문을 재현하지 않는다.
+
 ## 판정 기준
 
 - 다수결을 최종 판단 기준으로 사용하지 않는다.
@@ -114,4 +148,6 @@ received
 - Synthesizer가 근거 품질 대신 단순 다수결로 결정했다.
 - Verifier가 최종안의 남은 리스크를 확인하지 않았다.
 - Orchestrator가 라운드, 공개 범위, 종료 조건을 기록하지 않았다.
+- Orchestrator가 라운드별 요약 로그 없이 최종 결론만 남겼다.
+- 요약 로그가 원문 대화처럼 장황하거나 결론에 영향 없는 발화를 포함했다.
 - 에이전트가 서로 같은 역할을 반복해 관점 다양성이 사라졌다.
