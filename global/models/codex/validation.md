@@ -97,7 +97,8 @@
 
 ## 하네스 검증
 
-- 문서 하네스 자체를 변경했다면 `./scripts/validate-docs.sh`를 실행한다.
+- 문서 하네스 자체를 변경했다면 `bash scripts/validate-docs.sh`를 실행한다.
+- Windows 환경에서 `bash`를 사용할 수 없거나 권한 문제로 실패하면, 실패 이유를 기록하고 `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, 필수 문서·핵심 문구 확인을 PowerShell로 대체 실행한다.
 - 요청 유형이 `global/models/codex/harness/fixtures.md`의 어떤 케이스와 가까운지 확인한다.
 - 작업 단계가 `global/models/codex/harness/state-machine.md`의 전이 조건을 만족하는지 확인한다.
 - 요청 유형과 통과 기준이 `global/models/codex/harness/evaluation-rubric.md`와 맞는지 확인한다.
@@ -125,8 +126,17 @@
 - 적용한 모델 선택 기준
 - 실행한 검증 명령과 결과
 - 실행하지 못한 검증과 이유
+- 최신 정보나 외부 사실을 확인했다면 사용한 공식 문서 또는 1차 출처
 - 정리한 사용하지 않는 코드 또는 정리하지 않은 이유
 - 남은 작업
+
+## 최종 리뷰 체크
+
+- `git status`와 필요한 `git diff`를 확인해 의도한 파일만 변경됐는지 확인한다.
+- 사용자 기존 변경이나 미추적 파일을 되돌리거나 포함하지 않았는지 확인한다.
+- 로컬 또는 하위 `AGENTS.md` 지침이 있는 작업이라면 해당 지침과 충돌하지 않는지 확인한다.
+- 최신 정보가 필요한 판단을 기억만으로 단정하지 않았는지 확인한다.
+- Codex에 자동 hook 강제가 없더라도 Reviewer 관점의 재기획 필요 여부를 스스로 판단하고, 필요한 경우 Planner로 돌아간다.
 
 ## TDD Validation
 

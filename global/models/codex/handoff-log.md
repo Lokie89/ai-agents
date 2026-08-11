@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-11 (Codex 운영 공백 보완)
+
+- 목표: 현재 문서 기준에서 Codex 작업 시 빠지기 쉬운 실행 환경, 하위 지침, 사용자 변경 보호, 최신 정보 검증, 최종 리뷰 기준을 보완한다.
+- 변경: `AGENT.md`에 하위 `AGENTS.md` 적용 범위, UTF-8 읽기, dirty worktree 확인, Codex hook 부재 시 수동 Reviewer 확인, 최신 정보 출처 확인 기준을 추가했다. `context-map.md`, `tools.md`, `validation.md`, 하네스 실패 케이스와 루브릭에 같은 기준을 연결했다. Windows에서 `bash scripts/validate-docs.sh`가 불가할 때 PowerShell과 Node 기반 대체 검증을 기록하도록 했다.
+- 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, PowerShell 필수 문구 확인, `git diff --check`가 통과했다. `bash scripts/validate-docs.sh`는 sandbox에서 `E_ACCESSDENIED`, 권한 밖 재시도에서 CRLF 줄끝 해석 문제로 실패해 대체 검증으로 보완했다.
+- 남은 작업: Codex 전용 PowerShell 문서 검증 스크립트가 필요하면 `scripts/validate-docs.ps1`로 별도 추가할 수 있다.
+- 주의 사항: Claude 전용 hook, Workflow, Agent 도구명은 Codex 문서로 옮기지 않았다. Codex에서는 자동 hook 대신 최종 리뷰 체크를 문서 기준으로 수행한다.
+
 ### 2026-08-09 (실행 기록 자동 판정)
 
 - 목표: 문서 fixture를 실제 실행 기록과 비교할 수 있는 결정론적 evaluator를 추가한다.
@@ -49,11 +57,3 @@
 - 검증: sandbox 내부 `bash scripts/validate-docs.sh`는 `E_ACCESSDENIED`로 실패했다. 권한 밖에서 같은 명령을 다시 실행해 `document validation passed`를 확인했고, PowerShell 대체 검증으로 필수 파일과 핵심 문구도 확인했다.
 - 남은 작업: 필요하면 Markdown 링크 전체 검사 스크립트를 별도 추가할 수 있다.
 - 주의 사항: 명확한 구현 요청은 실행할 수 있지만, 도메인 정책, 보안, 권한, 데이터 손실, 되돌리기 어려운 변경이 불명확하면 구현 전에 질문해야 한다. 새 프로젝트 생성이나 프로젝트별 실행/검증 방식이 필요한 작업은 로컬 하네스 필요 여부를 먼저 판단해야 한다.
-
-### 2026-07-28
-
-- 목표: Codex 하네스가 실제 작업 판정에 더 직접적으로 쓰이도록 fixture와 판정 기준을 보강한다.
-- 변경: `evaluation-rubric.md`를 추가해 요청 유형, 통과 기준, 실패 우선 원칙, 판정 기록 형식을 정의했다. 승인 필요한 명령, 사용자 변경 보호, 검증 실패 보고, HTML 템플릿 내 JavaScript 수정 fixture를 추가했다. 실패 케이스에 사용자 변경 보호, 승인 및 실행 경계, 최신 정보 사용, 템플릿 내 JavaScript 검증 누락을 추가했다. 하네스 README, 컨텍스트 지도, 검증 문서, 문서 검증 스크립트에 새 루브릭 참조를 연결했다. `compare-report.html`처럼 JavaScript가 들어간 HTML 템플릿을 수정한 뒤에는 Java 컴파일과 별도로 script를 추출해 `node --check`를 실행하도록 검증 기준을 보강했다.
-- 검증: `bash scripts/validate-docs.sh`는 WSL 배포판 부재로 실행되지 않았다. 같은 파일 존재와 핵심 참조 조건을 PowerShell로 대체 실행해 통과했다.
-- 남은 작업: fixture별 실제 응답 샘플과 자동 채점 스크립트를 추가할 수 있다.
-- 주의 사항: 새 루브릭은 체크리스트 판정 기준이며, 실제 프로젝트 테스트나 보안 검토를 대체하지 않는다.
