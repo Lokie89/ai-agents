@@ -39,6 +39,13 @@
 - opt-in 없는 `Workflow` 호출
 - 실제 인물, 조직을 사칭하거나 신원 확인 절차를 우회하는 산출물 작성
 
+## 자동 강제 장치
+
+- 이 저장소의 `.claude/settings.json`에 `Stop` hook(`.claude/hooks/review-replan-check.sh`)이 등록되어 있다.
+- git diff/status에서 도메인 정책, 보안, 인증, 시크릿, migration 관련 파일이나 키워드(위험 신호)가 감지되면, 응답을 끝내기 전에 `REVIEW-CHECK: 재기획 불필요 - <근거>` 또는 `REVIEW-CHECK: 재기획 필요 - Planner로 복귀 - <근거>` 형식으로 재기획 필요 여부를 명시해야 훅이 응답 종료를 허용한다(`roles.md`의 Reviewer→Planner 전이 규칙을 기계적으로 보강).
+- 위험 신호가 없으면 훅은 아무 것도 하지 않는다(토큰 비용 없음).
+- 이 훅은 Claude Code의 hook 시스템에만 존재하며 Codex에는 적용되지 않는다.
+
 ## 도구 선택 기준
 
 - 전용 도구가 있으면 `Bash`/`PowerShell` 대신 전용 도구(`Read`/`Edit`/`Write`/`Glob`/`Grep`)를 우선한다.
