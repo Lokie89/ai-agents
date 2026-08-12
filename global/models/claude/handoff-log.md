@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-12 (문서 언어 정책 추가)
+
+- 목표: 저장소 운영 문서와 로컬 하네스 문서의 본문 언어 기준을 명시한다.
+- 변경: Codex/Claude `AGENT.md`에 문서 언어 섹션을 추가해 본문은 기본적으로 한국어, 파일명·코드 식별자·명령어·스키마 필드명·모델 ID·외부 API 이름은 원문 또는 영어 유지 기준을 정의했다. 양쪽 `project-rules.md`, `validation.md`, `local/README.md`, 문서 검증 스크립트에도 같은 기준을 연결했다.
+- 검증: `bash scripts/validate-docs.sh`, `git diff --check`를 실행한다.
+- 남은 작업: 실제 프로젝트별 로컬 문서에서 영어 본문이 필요한 경우 예외 이유를 남기는 관례를 적용한다.
+- 주의 사항: 루트 `AGENTS.md`/`CLAUDE.md` 같은 짧은 부트스트랩 문서는 영어를 허용하고, 상세 정책은 한국어 문서에 둔다.
+
 ### 2026-08-12 (프로젝트 시작 청사진 선행 강화)
 
 - 목표: 새 프로젝트 생성이나 초기 세팅 요청에서 파일 생성보다 청사진 제시가 먼저 일어나도록 하네스 기준을 강화한다.
@@ -53,13 +61,3 @@
 - 주의 사항: Claude의 Workflow opt-in 원칙은 유지한다. 숙의형 패턴은 Workflow 사용을 자동 허용하지 않고, 사용자가 명시적으로 오케스트레이션을 원할 때 적용한다.
 
 같은 문서, 다른 세션 후속 작업: 사용자가 "Java Spring Boot 아키텍처" 질문으로 숙의형 패턴을 실제로 시켜봤는데, `Workflow` opt-in 표현을 전혀 쓰지 않았음에도 `Agent` 도구만으로(proposer 3개 병렬 독립분석 → critic 1개 → 직접 synthesis/verification) deliberation.md의 라운드 구조를 그대로 재현해 잘 작동했다. 그런데 `model-routing.md` 133~134행이 "Workflow(멀티 에이전트 오케스트레이션) 사용 기준" 섹션 안, opt-in 규칙 바로 다음에 붙어 있어서 "숙의형 패턴 = Workflow 하위 항목 = opt-in 필요"로 잘못 읽힐 여지가 있었다. `model-routing.md`에 "숙의형 패턴 자체는 Workflow opt-in의 하위 항목이 아니다. 규모가 작으면(proposer/critic/synthesizer) opt-in 없이 `Agent`만으로 라운드를 직접 진행해도 되고, 라운드를 스크립트로 강제해야 하거나 규모가 커지면 그때 opt-in을 확인하고 `Workflow`로 승격한다"는 문장을 추가해 두 실행 경로를 명시했다. `bash scripts/validate-docs.sh` 통과 확인. 이 실행 경로 구분은 `validation.md`의 "숙의형 멀티 에이전트 검증" 절에는 원래도 Workflow 종속 서술이 없어 추가 수정은 하지 않았다.
-
-### 2026-08-11 (Stop hook으로 review→plan 루프 강제)
-
-- 목표: `AGENT.md`/`roles.md`/`state-machine.md`에 문서로만 존재하던 "Reviewer가 재기획 필요 위험을 발견하면 Planner로 되돌아간다" 규칙이 실제로는 아무 것도 강제하지 않는 산문 규범이라는 점을 사용자와 확인하고, 위험 신호가 있는 세션에서만 이를 강제하는 Stop hook을 추가한다.
-- 변경: `.claude/hooks/review-replan-check.sh`(git diff/status 기준으로 위험 신호를 저비용 패턴 매칭하고, 감지되면 transcript에서 `REVIEW-CHECK:` 마커 존재를 확인)와 `.claude/settings.json`(Stop hook 등록, 팀 공유 파일로 결정)을 새로 추가했다. 위험 신호가 없으면 즉시 종료해 일반 세션에는 토큰 비용이 들지 않고, 감지되면 응답 종료를 막고 `REVIEW-CHECK: 재기획 불필요 - <근거>` 또는 `REVIEW-CHECK: 재기획 필요 - Planner로 복귀 - <근거>` 형식의 명시적 확인을 요구한다. `stop_hook_active`를 확인해 무한 루프를 방지했다.
-- 검증: 위험 없음/위험+마커 없음/위험+마커 있음/`stop_hook_active=true` 4가지 시나리오를 합성 stdin으로 직접 pipe-test했고 모두 기대대로 동작했다(각 테스트 후 임시 파일 정리 확인). `jq -e`로 `settings.json`의 훅 스키마도 확인했다. `Stop` 이벤트 자체는 이번 대화 턴 밖에서 발생하므로 실제 세션에서 훅이 발화하는 것은 증명하지 못했다.
-- 남은 작업: 다음 세션에서 실제로 위험 신호가 있는 변경을 만들고 응답을 끝낼 때 훅이 실제로 걸리는지 확인이 필요하다. `.claude/settings.json`이 이번 세션 시작 후 처음 생긴 파일이라 설정 감시가 바로 걸리지 않으면 `/hooks`를 한 번 열거나 재시작해야 할 수 있다. `RISK_PATH_RE`/`RISK_KEYWORD_RE` 패턴은 이 저장소에서 실제 위험 사례가 쌓이면 넓히거나 좁힐 수 있다.
-- 주의 사항: 이 훅은 review→plan 전이가 실제로 일어났는지까지 검증하지 못한다 — Claude가 `REVIEW-CHECK:` 마커만 붙이고 실제로는 재기획을 안 해도 훅은 통과시킨다. 판단의 정직성까지는 강제할 수 없는 구조적 한계로 남긴다.
-
-같은 세션 후속 작업: 커밋 후 사용자가 "새 세션이 문서만 읽고 들어와도 이 훅의 존재를 알 수 있는가"를 물어서 확인한 결과, `tools.md`/`validation.md`에는 이 훅에 대한 언급이 전혀 없어 유일한 기록이 `handoff-log.md`뿐이었다(아카이브되면 사라짐). `tools.md`에 "자동 강제 장치" 섹션을 추가해 훅의 존재, 트리거 조건, `REVIEW-CHECK:` 형식, Codex에는 적용되지 않는다는 점을 명시했고, `validation.md` 기본 체크리스트에도 대응 항목을 추가했다. `bash scripts/validate-docs.sh` 통과 확인. 남은 갭: Codex는 이 메커니즘의 영향권 밖이며(Codex에는 Claude Code의 hook 시스템이 없음), `roles.md`/`codex/roles.md` 양쪽에 동일하게 있는 "Reviewer가 재기획 필요 위험을 찾으면 Planner로 돌아간다" 규칙은 Codex 쪽에서는 여전히 순수 산문 규범으로만 남아 있다. 이 비대칭을 Codex 쪽 문서에 알릴지는 사용자가 보류했다.

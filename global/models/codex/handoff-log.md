@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-12 (문서 언어 정책 추가)
+
+- 목표: 저장소 운영 문서와 로컬 하네스 문서의 본문 언어 기준을 명시한다.
+- 변경: Codex/Claude `AGENT.md`에 문서 언어 섹션을 추가해 본문은 기본적으로 한국어, 파일명·코드 식별자·명령어·스키마 필드명·모델 ID·외부 API 이름은 원문 또는 영어 유지 기준을 정의했다. 양쪽 `project-rules.md`, `validation.md`, `local/README.md`, 문서 검증 스크립트에도 같은 기준을 연결했다.
+- 검증: `bash scripts/validate-docs.sh`, `git diff --check`를 실행한다.
+- 남은 작업: 실제 프로젝트별 로컬 문서에서 영어 본문이 필요한 경우 예외 이유를 남기는 관례를 적용한다.
+- 주의 사항: 루트 `AGENTS.md`/`CLAUDE.md` 같은 짧은 부트스트랩 문서는 영어를 허용하고, 상세 정책은 한국어 문서에 둔다.
+
 ### 2026-08-12 (프로젝트 시작 청사진 선행 강화)
 
 - 목표: 새 프로젝트 생성이나 초기 세팅 요청에서 파일 생성보다 청사진 제시가 먼저 일어나도록 하네스 기준을 강화한다.
@@ -49,11 +57,3 @@
 - 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, PowerShell 필수 문구 확인, `git diff --check`가 통과했다. `bash scripts/validate-docs.sh`는 sandbox에서 `E_ACCESSDENIED`, 권한 밖 재시도에서 CRLF 줄끝 해석 문제로 실패해 대체 검증으로 보완했다.
 - 남은 작업: Codex 전용 PowerShell 문서 검증 스크립트가 필요하면 `scripts/validate-docs.ps1`로 별도 추가할 수 있다.
 - 주의 사항: Claude 전용 hook, Workflow, Agent 도구명은 Codex 문서로 옮기지 않았다. Codex에서는 자동 hook 대신 최종 리뷰 체크를 문서 기준으로 수행한다.
-
-### 2026-08-09 (실행 기록 자동 판정)
-
-- 목표: 문서 fixture를 실제 실행 기록과 비교할 수 있는 결정론적 evaluator를 추가한다.
-- 변경: 실행 기록에 `evidence`와 도구의 `mutates_state`를 표현하도록 스키마를 확장했다. fixture와 run record를 비교해 종료 상태, 쓰기 금지, 금지 행동, 승인 누락, 필수 근거, 예산 초과, 보고된 위반을 판정하는 evaluator와 CLI를 추가했다. 정상 계획 실행과 승인 없는 파괴적 실행 샘플을 회귀 테스트로 연결했다.
-- 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, 정상 실행 기록에 대한 `node scripts/evaluate-run.mjs ...`, `bash scripts/validate-docs.sh`, `git diff --check`가 통과했다.
-- 남은 작업: 실제 Codex 또는 Claude 실행을 `run-record.schema.json`으로 변환하는 adapter와 자연어 의미 evaluator는 아직 없다.
-- 주의 사항: 현재 evaluator는 기록된 event와 evidence를 신뢰하는 결정론적 판정기다. trace 수집기가 연결되기 전에는 실제 행동을 독립적으로 증명하지 않는다.

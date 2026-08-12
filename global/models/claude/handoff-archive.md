@@ -32,3 +32,13 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture 통과), `node scripts/test-evaluator.mjs` 모두 통과.
 - 남은 작업: `.claude/agents/*.md`와 `local/*/model-routing-map.md`는 실제 사용 예시가 쌓이면 내용을 더 구체화할 수 있다. 구조화 fixture는 여전히 prose fixture(Claude 11개)보다 적으므로 필요하면 계속 늘릴 수 있다.
 - 주의 사항: `local/sample-project/`는 실행 코드가 없는 문서 전용 샘플이라는 전제를 유지해야 한다. `legacy-module/`의 오버라이드 내용은 가상 예시이며 실제 정책이 아니다.
+
+## 2026-08-11 (Stop hook으로 review→plan 루프 강제)
+
+- 목표: `AGENT.md`/`roles.md`/`state-machine.md`에 문서로만 존재하던 "Reviewer가 재기획 필요 위험을 발견하면 Planner로 되돌아간다" 규칙이 실제로는 아무 것도 강제하지 않는 산문 규범이라는 점을 사용자와 확인하고, 위험 신호가 있는 세션에서만 이를 강제하는 Stop hook을 추가한다.
+- 변경: `.claude/hooks/review-replan-check.sh`(git diff/status 기준으로 위험 신호를 저비용 패턴 매칭하고, 감지되면 transcript에서 `REVIEW-CHECK:` 마커 존재를 확인)와 `.claude/settings.json`(Stop hook 등록, 팀 공유 파일로 결정)을 새로 추가했다. 위험 신호가 없으면 즉시 종료해 일반 세션에는 토큰 비용이 들지 않고, 감지되면 응답 종료를 막고 `REVIEW-CHECK: 재기획 불필요 - <근거>` 또는 `REVIEW-CHECK: 재기획 필요 - Planner로 복귀 - <근거>` 형식의 명시적 확인을 요구한다. `stop_hook_active`를 확인해 무한 루프를 방지했다.
+- 검증: 위험 없음/위험+마커 없음/위험+마커 있음/`stop_hook_active=true` 4가지 시나리오를 합성 stdin으로 직접 pipe-test했고 모두 기대대로 동작했다(각 테스트 후 임시 파일 정리 확인). `jq -e`로 `settings.json`의 훅 스키마도 확인했다. `Stop` 이벤트 자체는 이번 대화 턴 밖에서 발생하므로 실제 세션에서 훅이 발화하는 것은 증명하지 못했다.
+- 남은 작업: 다음 세션에서 실제로 위험 신호가 있는 변경을 만들고 응답을 끝낼 때 훅이 실제로 걸리는지 확인이 필요하다. `.claude/settings.json`이 이번 세션 시작 후 처음 생긴 파일이라 설정 감시가 바로 걸리지 않으면 `/hooks`를 한 번 열거나 재시작해야 할 수 있다. `RISK_PATH_RE`/`RISK_KEYWORD_RE` 패턴은 이 저장소에서 실제 위험 사례가 쌓이면 넓히거나 좁힐 수 있다.
+- 주의 사항: 이 훅은 review→plan 전이가 실제로 일어났는지까지 검증하지 못한다 — Claude가 `REVIEW-CHECK:` 마커만 붙이고 실제로는 재기획을 안 해도 훅은 통과시킨다. 판단의 정직성까지는 강제할 수 없는 구조적 한계로 남긴다.
+
+같은 세션 후속 작업: 커밋 후 사용자가 "새 세션이 문서만 읽고 들어와도 이 훅의 존재를 알 수 있는가"를 물어서 확인한 결과, `tools.md`/`validation.md`에는 이 훅에 대한 언급이 전혀 없어 유일한 기록이 `handoff-log.md`뿐이었다(아카이브되면 사라짐). `tools.md`에 "자동 강제 장치" 섹션을 추가해 훅의 존재, 트리거 조건, `REVIEW-CHECK:` 형식, Codex에는 적용되지 않는다는 점을 명시했고, `validation.md` 기본 체크리스트에도 대응 항목을 추가했다. `bash scripts/validate-docs.sh` 통과 확인. 남은 갭: Codex는 이 메커니즘의 영향권 밖이며(Codex에는 Claude Code의 hook 시스템이 없음), `roles.md`/`codex/roles.md` 양쪽에 동일하게 있는 "Reviewer가 재기획 필요 위험을 찾으면 Planner로 돌아간다" 규칙은 Codex 쪽에서는 여전히 순수 산문 규범으로만 남아 있다. 이 비대칭을 Codex 쪽 문서에 알릴지는 사용자가 보류했다.
