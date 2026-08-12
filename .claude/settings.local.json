@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash scripts/validate-docs.sh)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(node scripts/validate-harness.mjs)",
+      "Bash(node scripts/test-evaluator.mjs)",
+      "Skill(update-config)",
+      "Bash(bash .claude/hooks/review-replan-check.sh)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(echo \"---exit:$?\")",
+      "Bash(rm -f security-test-tmp.md)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(echo \"EXIT1:$?\")",
+      "Bash(echo \"EXIT2:$?\")",
+      "Bash(echo \"EXIT3:$?\")",
+      "Bash(echo \"EXIT_DOCS:$?\")",
+      "Bash(echo \"EXIT_HARNESS:$?\")",
+      "Bash(echo \"EXIT_EVAL:$?\")",
+      "Bash(echo \"EXIT_DIFFCHECK:$?\")"
+    ]
+  }
+}
