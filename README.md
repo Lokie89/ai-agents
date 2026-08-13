@@ -56,4 +56,14 @@ node scripts/test-evaluator.mjs
 
 같은 검사는 `.github/workflows/validate-docs.yml`을 통해 `master` 대상 push와 PR에서도 자동 실행됩니다.
 
+## 복사 후 부트스트랩
+
+이 폴더를 다른 프로젝트로 복사해 쓸 때 루트 진입 문서가 빠졌다면 아래 명령으로 생성합니다. 이미 있는 파일은 덮어쓰지 않습니다.
+
+```sh
+node scripts/ensure-entrypoints.mjs
+```
+
+생성 대상은 Codex용 `AGENTS.md`와 Claude Code용 `CLAUDE.md`입니다.
+
 현재 저장소는 문서 정책과 정적 평가 계약까지 제공하며, 모델 호출, checkpoint 저장, trace 수집, queue, 배포를 수행하는 프로덕션 런타임은 포함하지 않습니다.

@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-13 (루트 진입 문서 부트스트랩)
+
+- 목표: `ai-agents` 폴더를 다른 프로젝트로 복사했을 때 루트 `AGENTS.md` 또는 `CLAUDE.md`가 없으면 바로 생성할 수 있게 한다.
+- 변경: `scripts/ensure-entrypoints.mjs`를 추가해 Codex용 `AGENTS.md`와 Claude Code용 `CLAUDE.md`를 생성한다. 기존 파일은 덮어쓰지 않는다. `README.md`, Codex/Claude `project-rules.md`, Codex/Claude `validation.md`, `scripts/validate-docs.sh`에 부트스트랩 명령과 검증 기준을 연결했다.
+- 검증: `node scripts/ensure-entrypoints.mjs`는 기존 파일을 감지하고 `0 created`로 종료했다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 없음.
+- 주의 사항: 이 스크립트는 루트 진입 문서만 생성하며 `global/` 또는 `local/` 문서 세트가 누락된 경우까지 복원하지 않는다.
+
 ### 2026-08-12 (문서 언어 정책 추가)
 
 - 목표: 저장소 운영 문서와 로컬 하네스 문서의 본문 언어 기준을 명시한다.
@@ -49,11 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, PowerShell 필수 문구 확인, `git diff --check`가 통과했다. 기존 CRLF 줄끝 문제는 `scripts/validate-docs.sh`를 LF로 정리해 해결했다. 라운드별 요약 로그 문구도 문서 검증 스크립트에 추가했다.
 - 남은 작업: 실제 런타임을 만들 때 `AgentOpinion`, `Critique`, `FinalSynthesis` 같은 JSON 스키마와 샘플 run record를 추가할 수 있다.
 - 주의 사항: 이 변경은 런타임 구현이 아니라 공통 설계 계약이다. 특정 도메인 판단은 hard gate와 프로젝트 정책이 우선하고, 숙의는 애매한 영역의 의견 품질 개선에 사용한다.
-
-### 2026-08-11 (Codex 운영 공백 보완)
-
-- 목표: 현재 문서 기준에서 Codex 작업 시 빠지기 쉬운 실행 환경, 하위 지침, 사용자 변경 보호, 최신 정보 검증, 최종 리뷰 기준을 보완한다.
-- 변경: `AGENT.md`에 하위 `AGENTS.md` 적용 범위, UTF-8 읽기, dirty worktree 확인, Codex hook 부재 시 수동 Reviewer 확인, 최신 정보 출처 확인 기준을 추가했다. `context-map.md`, `tools.md`, `validation.md`, 하네스 실패 케이스와 루브릭에 같은 기준을 연결했다. Windows에서 `bash scripts/validate-docs.sh`가 불가할 때 PowerShell과 Node 기반 대체 검증을 기록하도록 했다.
-- 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, PowerShell 필수 문구 확인, `git diff --check`가 통과했다. `bash scripts/validate-docs.sh`는 sandbox에서 `E_ACCESSDENIED`, 권한 밖 재시도에서 CRLF 줄끝 해석 문제로 실패해 대체 검증으로 보완했다.
-- 남은 작업: Codex 전용 PowerShell 문서 검증 스크립트가 필요하면 `scripts/validate-docs.ps1`로 별도 추가할 수 있다.
-- 주의 사항: Claude 전용 hook, Workflow, Agent 도구명은 Codex 문서로 옮기지 않았다. Codex에서는 자동 hook 대신 최종 리뷰 체크를 문서 기준으로 수행한다.

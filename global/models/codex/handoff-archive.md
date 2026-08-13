@@ -57,3 +57,11 @@
 - 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, 정상 실행 기록에 대한 `node scripts/evaluate-run.mjs ...`, `bash scripts/validate-docs.sh`, `git diff --check`가 통과했다.
 - 남은 작업: 실제 Codex 또는 Claude 실행을 `run-record.schema.json`으로 변환하는 adapter와 자연어 의미 evaluator는 아직 없다.
 - 주의 사항: 현재 evaluator는 기록된 event와 evidence를 신뢰하는 결정론적 판정기다. trace 수집기가 연결되기 전에는 실제 행동을 독립적으로 증명하지 않는다.
+
+## 2026-08-11 (Codex 운영 공백 보완)
+
+- 목표: 현재 문서 기준에서 Codex 작업 시 빠지기 쉬운 실행 환경, 하위 지침, 사용자 변경 보호, 최신 정보 검증, 최종 리뷰 기준을 보완한다.
+- 변경: `AGENT.md`에 하위 `AGENTS.md` 적용 범위, UTF-8 읽기, dirty worktree 확인, Codex hook 부재 시 수동 Reviewer 확인, 최신 정보 출처 확인 기준을 추가했다. `context-map.md`, `tools.md`, `validation.md`, 하네스 실패 케이스와 루브릭에 같은 기준을 연결했다. Windows에서 `bash scripts/validate-docs.sh`가 불가할 때 PowerShell과 Node 기반 대체 검증을 기록하도록 했다.
+- 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, PowerShell 필수 문구 확인, `git diff --check`가 통과했다. `bash scripts/validate-docs.sh`는 sandbox에서 `E_ACCESSDENIED`, 권한 밖 재시도에서 CRLF 줄끝 해석 문제로 실패해 대체 검증으로 보완했다.
+- 남은 작업: Codex 전용 PowerShell 문서 검증 스크립트가 필요하면 `scripts/validate-docs.ps1`로 별도 추가할 수 있다.
+- 주의 사항: Claude 전용 hook, Workflow, Agent 도구명은 Codex 문서로 옮기지 않았다. Codex에서는 자동 hook 대신 최종 리뷰 체크를 문서 기준으로 수행한다.
