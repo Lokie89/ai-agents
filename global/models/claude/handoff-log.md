@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-13 (프로젝트 루트 부트스트랩 확장)
+
+- 목표: 이 문서 세트를 다른 프로젝트에 복사했을 때 루트 진입 문서와 기본 Codex 에이전트 세트를 자동으로 보강할 수 있게 한다.
+- 변경: `scripts/bootstrap-project-root.mjs`를 추가해 `AGENTS.md`, `CLAUDE.md`, `.codex/agents/*.toml` 기본 세트를 생성하도록 했다. 기존 파일은 덮어쓰지 않는다. `README.md`, Codex/Claude `project-rules.md`, Codex/Claude `validation.md`, `scripts/validate-docs.sh`에 새 명령과 검증 기준을 연결했다.
+- 검증: Codex 세션에서 `node scripts/bootstrap-project-root.mjs`, 임시 디렉터리 생성 검증, `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 없음.
+- 주의 사항: Claude 전용 `.claude/agents/` 생성은 포함하지 않았다.
+
 ### 2026-08-13 (기본 토론 에이전트 기준 연결)
 
 - 목표: 하네스와 에이전트 운영 정책 토론 결과를 durable 문서에 남기는 기준을 Claude 문서에도 연결한다.
@@ -51,11 +59,3 @@
 - 주의 사항: 사용자가 "바로 파일 생성해", "청사진 생략하고 구현해"처럼 명시적으로 승인한 경우에는 구현으로 넘어갈 수 있지만, 기본값은 청사진 선행이다.
 
 같은 문서, 다른 세션 후속 작업: 사용자가 Codex 세션에서 만든 이 커밋의 Claude 쪽 내용을 검토해달라고 요청해 확인했다. `AGENT.md`/`goal.md`/`project-rules.md`/`context-map.md`/`state-machine.md`/`evaluation-rubric.md`/`output-schema.md`/`validation.md`/`handoff-archive.md` 변경은 Claude 도구(`EnterPlanMode`/`ExitPlanMode`/`AskUserQuestion`/`TaskCreate`) 기준과 일치했고 상태 전이에도 모순이 없었다. 다만 `harness/fixtures.md`의 Fixture 10 "실패 판정"에 이전 버전(승인 없이도 바로 구현하던 시절) 문구 "프로젝트를 만들었지만 실행 명령이나 동작하는 핵심 흐름을 보고하지 않았다"가 그대로 남아 있었다 — 이 fixture의 새 기대 행동은 승인 전 파일 생성을 금지하므로 "만든 프로젝트"가 있을 수 없어 자기 모순이었다. "청사진에 예상 핵심 흐름(문의 등록, 조회, 상태 변경)이나 실행/검증 명령 후보가 없다"로 고쳤다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 모두 통과 확인. 같은 leftover 문구가 `global/models/codex/harness/fixtures.md`의 동일 Fixture 10(216행)에도 남아 있어, 사용자 확인 후 같은 문장으로 함께 고쳤다.
-
-### 2026-08-12 (Codex 운영 기준 보완 대조)
-
-- 목표: Codex 쪽 `7a00434`(하위 `AGENTS.md`, PowerShell 인코딩, dirty worktree 보호, 최신 정보 확인, hook 부재 시 수동 Reviewer 체크 보완) 커밋을 Claude 문서와 대조해 반영할 게 있는지 확인한다.
-- 변경: 대부분은 이미 Claude 쪽에 동등하거나 더 강한 형태로 있었다(중첩 `CLAUDE.md`는 Claude Code가 네이티브로 자동 로드하므로 별도 규칙 불필요, `Read` 툴이 인코딩을 처리, `사용자 변경 보호 위반`/`최신 정보 사용 위반` 실패 케이스 기존 존재, Codex에는 없는 Stop hook을 Claude는 이미 보유). 실제로 빠진 항목 2개만 반영했다: `harness/failure-cases.md`의 "사용자 변경 보호 위반"에 "커밋이나 스테이징을 수행하면서 현재 작업과 무관한 변경을 포함했다"를 추가했고, `validation.md`의 "결과 보고 형식"에 "최신 정보나 외부 사실을 확인했다면 사용한 공식 문서 또는 1차 출처"를 추가했다.
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture 통과), `node scripts/test-evaluator.mjs`(2 케이스 통과), `git diff --check` 모두 통과.
-- 남은 작업: 없음.
-- 주의 사항: Codex와 Claude는 실행 환경이 달라(네이티브 중첩 CLAUDE.md 로드, Stop hook 존재, Bash 툴이 Git Bash를 문제없이 사용) 모든 항목을 1:1로 옮길 필요는 없다. 대조할 때마다 "Codex에 없는 기능을 보완한 항목"과 "Codex의 샌드박스/환경 제약 때문에 추가된 항목"을 구분해서 판단해야 한다.

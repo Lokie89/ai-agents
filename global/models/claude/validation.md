@@ -97,7 +97,8 @@
 ## 문서 변경 검증
 
 - 링크가 올바른 상대 경로를 가리키는지 확인한다.
-- 루트 진입 문서 생성 정책을 변경했다면 `node scripts/ensure-entrypoints.mjs`가 기존 `AGENTS.md`와 `CLAUDE.md`를 덮어쓰지 않는지 확인한다.
+- 프로젝트 루트 부트스트랩 정책을 변경했다면 `node scripts/bootstrap-project-root.mjs`가 기존 `AGENTS.md`, `CLAUDE.md`, `.codex/agents/*.toml`을 덮어쓰지 않는지 확인한다.
+- 루트 진입 문서 생성 정책만 변경했다면 `node scripts/ensure-entrypoints.mjs`가 기존 `AGENTS.md`와 `CLAUDE.md`를 덮어쓰지 않는지 확인한다.
 - 문서 구조가 해당 문서의 목적에 맞는 필수 섹션을 포함하는지 확인한다.
 - 저장소 운영 문서와 로컬 하네스 문서의 본문이 기본적으로 한국어로 작성되었는지 확인한다.
 - 파일명, 코드 식별자, 명령어, 스키마 필드명, 모델 ID, 외부 API 이름은 원문 또는 영어를 유지해도 되는 예외로 취급한다.

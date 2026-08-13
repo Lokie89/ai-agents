@@ -7,7 +7,8 @@
 ## 프로젝트 진입 기준
 
 - 먼저 사용자 요청이 새 프로젝트 생성인지, 기존 프로젝트 수정인지, 단순 분석인지 분류한다.
-- 이 문서 세트를 다른 프로젝트 루트로 복사했는데 루트 `AGENTS.md` 또는 `CLAUDE.md`가 없으면 `node scripts/ensure-entrypoints.mjs`로 진입 문서를 생성한다. 기존 파일은 덮어쓰지 않는다.
+- 이 문서 세트를 다른 프로젝트 루트로 복사했는데 루트 `AGENTS.md`, `CLAUDE.md`, 기본 `.codex/agents/` 에이전트가 없으면 `node scripts/bootstrap-project-root.mjs`로 생성한다. 기존 파일은 덮어쓰지 않는다.
+- 루트 진입 문서만 보강하면 충분한 경우에는 `node scripts/ensure-entrypoints.mjs`를 사용할 수 있다.
 - 새 프로젝트 생성이나 프로젝트 초기 세팅으로 분류되면 기본 동작은 청사진 먼저 제시이며, 사용자가 청사진 승인 또는 즉시 파일 생성을 명시하기 전까지 구현을 시작하지 않는다.
 - `Glob`/`Read`로 저장소 구조, 실행 파일, 설정 파일, lockfile, 테스트 파일, README를 확인한다.
 - 해당 프로젝트의 로컬 문서가 있는지 확인한다.

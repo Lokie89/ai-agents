@@ -58,12 +58,18 @@ node scripts/test-evaluator.mjs
 
 ## 복사 후 부트스트랩
 
-이 폴더를 다른 프로젝트로 복사해 쓸 때 루트 진입 문서가 빠졌다면 아래 명령으로 생성합니다. 이미 있는 파일은 덮어쓰지 않습니다.
+이 폴더를 다른 프로젝트로 복사해 쓸 때 루트 진입 문서와 기본 Codex 에이전트가 빠졌다면 아래 명령으로 생성합니다. 이미 있는 파일은 덮어쓰지 않습니다.
+
+```sh
+node scripts/bootstrap-project-root.mjs
+```
+
+생성 대상은 Codex용 `AGENTS.md`, Claude Code용 `CLAUDE.md`, 그리고 `.codex/agents/`의 기본 토론 에이전트 세트입니다.
+
+루트 진입 문서만 필요하면 아래 명령을 사용할 수 있습니다.
 
 ```sh
 node scripts/ensure-entrypoints.mjs
 ```
-
-생성 대상은 Codex용 `AGENTS.md`와 Claude Code용 `CLAUDE.md`입니다.
 
 현재 저장소는 문서 정책과 정적 평가 계약까지 제공하며, 모델 호출, checkpoint 저장, trace 수집, queue, 배포를 수행하는 프로덕션 런타임은 포함하지 않습니다.
