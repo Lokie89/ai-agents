@@ -42,6 +42,12 @@
 | `security` | 지원되는 높은 수준 | 보안, 권한, 데이터 노출 위험 분석 |
 | `explorer` | 낮음~중간 | 읽기 중심 탐색과 후보 위치 확인 |
 | `documenter` | 중간 | 문서, 기록, 템플릿 작성 |
+| `product-planner` | 높음 | 프로젝트 목적, 주사용자, 연령대, 범위, 사용자 흐름 판단 |
+| `ux-ui-designer` | 높음 | UX/UI, 사용성, 표현 방식, 머무는 시간과 참여 유도 판단 |
+| `frontend-developer` | 중간~높음 | 컴포넌트 구조, 재사용, 프론트엔드·앱 구현 전략 |
+| `backend-developer` | 높음 | 도메인 우선 백엔드 설계, 아키텍처 정합성, 테스트 우선 개발 |
+| `database-specialist` | 높음 | Entity와 DBMS 적합성, 스키마, 인덱스, 제약, 마이그레이션 |
+| `product-tester` | 중간~높음 | 타겟 사용자 관점의 사용성, UX/UI, 개선 제안 검토 |
 
 역할 기본값보다 실제 작업 위험이 우선한다. 예를 들어 구현 역할이라도 인증이나 데이터 마이그레이션을 다루면 추론 강도를 높이고 별도 검토를 둔다.
 
@@ -72,6 +78,8 @@ Review the requested diff and report concrete findings first.
 
 - 사용자가 위임이나 병렬 에이전트 작업을 요청했거나 적용 중인 지침이 요구할 때만 서브에이전트를 사용한다.
 - 코드 탐색, 테스트, 로그 분석, 독립 리뷰처럼 경계가 분명한 읽기 중심 작업을 우선 위임한다.
+- 하네스, 에이전트 운영 정책, 검증 기준, 실패 케이스, 산출물 스키마처럼 문서화 판단이 핵심인 토론에는 기본 커스텀 에이전트 `.codex/agents/harness-deliberator.toml`을 우선 고려한다.
+- 제품·기능 토론에는 기본 커스텀 에이전트 세트인 `.codex/agents/product-planner.toml`, `.codex/agents/ux-ui-designer.toml`, `.codex/agents/frontend-developer.toml`, `.codex/agents/backend-developer.toml`, `.codex/agents/database-specialist.toml`, `.codex/agents/product-tester.toml`을 목적에 맞게 조합한다.
 - 더 나은 의견 형성이 목표인 작업은 공통 하네스의 `global/harness/deliberation.md`를 따라 Orchestrator가 독립 의견, 비판, 수정, 합성, 검증 라운드를 통제한다.
 - 숙의형 작업은 단순 다수결을 사용하지 않고 근거 품질, 정책 적합성, 반대 근거, 남은 리스크를 기준으로 판단한다.
 - 같은 파일을 동시에 수정하는 write-heavy 병렬 작업은 충돌과 조정 비용이 크므로 피한다.

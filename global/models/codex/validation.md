@@ -53,6 +53,7 @@
 - 모델을 직접 지정했다면 현재 환경에서 지원하는 실제 모델 ID인지 확인한다.
 - `model_reasoning_effort`가 해당 모델에서 지원되는 값인지 확인한다.
 - 커스텀 에이전트가 `.codex/agents/<name>.toml` 형식과 필수 필드를 따르는지 확인한다.
+- 기본 커스텀 에이전트 세트가 제품 기획, UX/UI 디자인, 프론트엔드, 백엔드, 데이터베이스, 테스터 관점을 빠뜨리지 않는지 확인한다.
 - 고위험 작업은 모델 선택과 별도로 승인, 테스트, 독립 검토를 거쳤는지 확인한다.
 
 ## 숙의형 멀티 에이전트 검증
@@ -64,6 +65,7 @@
 - Verifier가 최종안의 누락, 약한 근거, 추가 검증 필요 항목을 기록했는지 확인한다.
 - 라운드 수, 종료 조건, 예산 초과 또는 blocked 사유가 기록됐는지 확인한다.
 - 라운드별 요약 로그가 원문 대화가 아니라 핵심 주장, 반박, 수정, 남은 리스크 중심으로 짧게 기록됐는지 확인한다.
+- 토론으로 결정, 정책, 검증 기준, 실패 케이스, 산출물 형식, 남은 리스크, 후속 질문이 바뀌었다면 적절한 durable 문서나 `handoff-log.md`에 반영됐는지 확인한다.
 
 ## 도메인 정책 검증
 
@@ -126,6 +128,7 @@
 - 문서 하네스 자체를 변경했다면 `bash scripts/validate-docs.sh`를 실행한다.
 - Windows 환경에서 `bash`를 사용할 수 없거나 권한 문제로 실패하면, 실패 이유를 기록하고 `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, 필수 문서·핵심 문구 확인을 PowerShell로 대체 실행한다.
 - 공통 숙의 패턴을 변경했다면 `global/harness/deliberation.md`가 `global/harness/README.md`, `global/harness/architecture.md`, 모델별 라우팅 또는 검증 문서에서 참조되는지 확인한다.
+- Codex 커스텀 에이전트를 추가했다면 `.codex/agents/<name>.toml` 문법과 모델 라우팅 문서의 참조가 맞는지 확인한다.
 - 요청 유형이 `global/models/codex/harness/fixtures.md`의 어떤 케이스와 가까운지 확인한다.
 - 작업 단계가 `global/models/codex/harness/state-machine.md`의 전이 조건을 만족하는지 확인한다.
 - 요청 유형과 통과 기준이 `global/models/codex/harness/evaluation-rubric.md`와 맞는지 확인한다.

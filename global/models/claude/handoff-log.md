@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-13 (기본 토론 에이전트 기준 연결)
+
+- 목표: 하네스와 에이전트 운영 정책 토론 결과를 durable 문서에 남기는 기준을 Claude 문서에도 연결한다.
+- 변경: 공통 `global/harness/deliberation.md`에 토론 후 문서화 기준을 추가하고, Codex/Claude 검증·실패 케이스·산출물 스키마에 같은 기준을 연결했다. Codex 쪽에는 하네스 토론 에이전트와 제품 기획자, UX/UI 디자이너, 프론트엔드 개발자, 백엔드 개발자, DB 전문가, 테스터 커스텀 에이전트를 추가했다.
+- 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, TOML 문법 검사, `git diff --check`를 실행한다.
+- 남은 작업: Claude 전용 서브에이전트가 필요하면 별도 `.claude/agents/` 정의를 추가할 수 있다.
+- 주의 사항: 이번 변경은 Claude Workflow opt-in 규칙을 바꾸지 않는다.
+
 ### 2026-08-13 (테스트 코드 문서성 명시)
 
 - 목표: 테스트 코드가 기능 구현 시 자주 참조해야 하는 문서 역할도 한다는 기준을 명시한다.
@@ -51,11 +59,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture 통과), `node scripts/test-evaluator.mjs`(2 케이스 통과), `git diff --check` 모두 통과.
 - 남은 작업: 없음.
 - 주의 사항: Codex와 Claude는 실행 환경이 달라(네이티브 중첩 CLAUDE.md 로드, Stop hook 존재, Bash 툴이 Git Bash를 문제없이 사용) 모든 항목을 1:1로 옮길 필요는 없다. 대조할 때마다 "Codex에 없는 기능을 보완한 항목"과 "Codex의 샌드박스/환경 제약 때문에 추가된 항목"을 구분해서 판단해야 한다.
-
-### 2026-08-12 (로컬 아키텍처 청사진 추가)
-
-- 목표: 프로젝트별 로컬 하네스가 도메인 정책뿐 아니라 아키텍처 청사진도 먼저 확인하도록 기준을 확장한다.
-- 변경: `local/_template/architecture.md`와 `local/sample-project/architecture.md`를 추가했다. Codex/Claude 프로젝트 규칙, 목표, AGENT, 컨텍스트 지도, 검증, 하네스 산출물, fixture, 실패 케이스에 `architecture.md` 확인과 청사진 질문 기준을 연결했다. `local/README.md`, 샘플 context-map, 루트 README, 문서 검증 스크립트도 새 필수 문서에 맞췄다.
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
-- 남은 작업: 실제 프로젝트에 적용하면서 아키텍처 질문 항목이 과하거나 부족한지 사례를 보고 조정할 수 있다.
-- 주의 사항: 아키텍처는 현재 기준의 청사진이며 모든 항목을 한 번에 확정하지 않는다. 구현 전제에 직접 영향을 주는 항목만 질문으로 승격하고, 나머지는 `미정` 또는 `해당 없음`으로 기록한다.

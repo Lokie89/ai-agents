@@ -52,3 +52,11 @@
 - 주의 사항: Claude의 Workflow opt-in 원칙은 유지한다. 숙의형 패턴은 Workflow 사용을 자동 허용하지 않고, 사용자가 명시적으로 오케스트레이션을 원할 때 적용한다.
 
 같은 문서, 다른 세션 후속 작업: 사용자가 "Java Spring Boot 아키텍처" 질문으로 숙의형 패턴을 실제로 시켜봤는데, `Workflow` opt-in 표현을 전혀 쓰지 않았음에도 `Agent` 도구만으로(proposer 3개 병렬 독립분석 → critic 1개 → 직접 synthesis/verification) deliberation.md의 라운드 구조를 그대로 재현해 잘 작동했다. 그런데 `model-routing.md` 133~134행이 "Workflow(멀티 에이전트 오케스트레이션) 사용 기준" 섹션 안, opt-in 규칙 바로 다음에 붙어 있어서 "숙의형 패턴 = Workflow 하위 항목 = opt-in 필요"로 잘못 읽힐 여지가 있었다. `model-routing.md`에 "숙의형 패턴 자체는 Workflow opt-in의 하위 항목이 아니다. 규모가 작으면(proposer/critic/synthesizer) opt-in 없이 `Agent`만으로 라운드를 직접 진행해도 되고, 라운드를 스크립트로 강제해야 하거나 규모가 커지면 그때 opt-in을 확인하고 `Workflow`로 승격한다"는 문장을 추가해 두 실행 경로를 명시했다. `bash scripts/validate-docs.sh` 통과 확인. 이 실행 경로 구분은 `validation.md`의 "숙의형 멀티 에이전트 검증" 절에는 원래도 Workflow 종속 서술이 없어 추가 수정은 하지 않았다.
+
+## 2026-08-12 (로컬 아키텍처 청사진 추가)
+
+- 목표: 프로젝트별 로컬 하네스가 도메인 정책뿐 아니라 아키텍처 청사진도 먼저 확인하도록 기준을 확장한다.
+- 변경: `local/_template/architecture.md`와 `local/sample-project/architecture.md`를 추가했다. Codex/Claude 프로젝트 규칙, 목표, AGENT, 컨텍스트 지도, 검증, 하네스 산출물, fixture, 실패 케이스에 `architecture.md` 확인과 청사진 질문 기준을 연결했다. `local/README.md`, 샘플 context-map, 루트 README, 문서 검증 스크립트도 새 필수 문서에 맞췄다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 실제 프로젝트에 적용하면서 아키텍처 질문 항목이 과하거나 부족한지 사례를 보고 조정할 수 있다.
+- 주의 사항: 아키텍처는 현재 기준의 청사진이며 모든 항목을 한 번에 확정하지 않는다. 구현 전제에 직접 영향을 주는 항목만 질문으로 승격하고, 나머지는 `미정` 또는 `해당 없음`으로 기록한다.
