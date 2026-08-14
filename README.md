@@ -64,7 +64,7 @@ node scripts/test-evaluator.mjs
 node scripts/bootstrap-project-root.mjs
 ```
 
-생성 대상은 Codex용 `AGENTS.md`, Claude Code용 `CLAUDE.md`, 그리고 `.codex/agents/`의 기본 토론 에이전트 세트입니다.
+생성 대상은 Codex용 `AGENTS.md`, Claude Code용 `CLAUDE.md`, 그리고 `.codex/agents/`와 `.claude/agents/`의 기본 토론 에이전트 세트입니다.
 
 루트 진입 문서만 필요하면 아래 명령을 사용할 수 있습니다.
 

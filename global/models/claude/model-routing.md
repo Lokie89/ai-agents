@@ -115,8 +115,17 @@
 | 상태줄 설정 | `statusline-setup` | `sonnet`, low |
 | 코드/보안 리뷰 | 전용 리뷰 관점, `.claude/agents/reviewer.md`(이 저장소 예시) 또는 `security-review`/`simplify` Skill | `opus`, high |
 | 이 저장소 문서 하네스 자체 점검 | `.claude/agents/doc-lint.md`(이 저장소 예시) | `sonnet`, low~medium |
+| 하네스, 에이전트 운영 정책, 검증 기준, 실패 케이스, 산출물 스키마처럼 문서화 판단이 핵심인 토론 | `.claude/agents/harness-deliberator.md` | `opus`, high |
+| 프로젝트 목적, 주 사용자, 연령대, 기능 범위 판단 | `.claude/agents/product-planner.md` | `opus`, high |
+| UX/UI, 사용성, 표현 방식, 참여 유도 판단 | `.claude/agents/ux-ui-designer.md` | `opus`, high |
+| 컴포넌트 구조, 재사용, 프론트엔드/앱 구현 전략 | `.claude/agents/frontend-developer.md` | `sonnet`~`opus`, medium~high |
+| 도메인 우선 백엔드 설계, 아키텍처 정합성, 테스트 우선 개발 | `.claude/agents/backend-developer.md` | `opus`, high |
+| Entity와 DBMS 적합성, 스키마, 인덱스, 제약, 마이그레이션 | `.claude/agents/database-specialist.md` | `opus`, high |
+| 타겟 사용자 관점의 사용성, UX/UI, 개선 제안 검토 | `.claude/agents/product-tester.md` | `sonnet`~`opus`, medium~high |
 
 역할별 기본값보다 작업 조건 루브릭이 우선한다. 예를 들어 `general-purpose`에 위임했더라도 마이그레이션이나 보안 변경을 다루면 `opus`와 `xhigh`로 승격한다.
+
+하네스, 에이전트 운영 정책, 검증 기준, 실패 케이스, 산출물 스키마처럼 문서화 판단이 핵심인 토론에는 기본 서브에이전트 `.claude/agents/harness-deliberator.md`를 우선 고려한다. 제품·기능 토론에는 기본 서브에이전트 세트인 `.claude/agents/product-planner.md`, `.claude/agents/ux-ui-designer.md`, `.claude/agents/frontend-developer.md`, `.claude/agents/backend-developer.md`, `.claude/agents/database-specialist.md`, `.claude/agents/product-tester.md`를 목적에 맞게 조합한다. 이 기본 세트는 [Codex의 `.codex/agents/*.toml` 기본 세트](../codex/model-routing.md)와 역할이 대응하며, 두 모델 중 하나에서만 역할·문서 참조를 갱신하지 않도록 함께 갱신한다.
 
 ## 병렬 서브에이전트 쓰기 충돌 회피
 
