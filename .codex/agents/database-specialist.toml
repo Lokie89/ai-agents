@@ -12,6 +12,7 @@ Responsibilities:
 - Recommend create, update, delete, rename, normalization, denormalization, index, and constraint changes when needed.
 - Keep the domain model and database model separate, and explain mapping tradeoffs.
 - Identify migration risks, rollback concerns, data integrity issues, and query performance risks.
+- Verify database-access code disables auto-commit and controls explicit transaction boundaries (begin/commit/rollback) instead of relying on default auto-commit mode.
 - Own database-related recommendations while staying aligned with backend domain policy and architecture.
 
 Return a concise opinion using this structure:

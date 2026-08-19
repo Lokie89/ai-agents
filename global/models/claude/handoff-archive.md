@@ -78,3 +78,11 @@
 - 주의 사항: 사용자가 "바로 파일 생성해", "청사진 생략하고 구현해"처럼 명시적으로 승인한 경우에는 구현으로 넘어갈 수 있지만, 기본값은 청사진 선행이다.
 
 같은 문서, 다른 세션 후속 작업: 사용자가 Codex 세션에서 만든 이 커밋의 Claude 쪽 내용을 검토해달라고 요청해 확인했다. `AGENT.md`/`goal.md`/`project-rules.md`/`context-map.md`/`state-machine.md`/`evaluation-rubric.md`/`output-schema.md`/`validation.md`/`handoff-archive.md` 변경은 Claude 도구(`EnterPlanMode`/`ExitPlanMode`/`AskUserQuestion`/`TaskCreate`) 기준과 일치했고 상태 전이에도 모순이 없었다. 다만 `harness/fixtures.md`의 Fixture 10 "실패 판정"에 이전 버전(승인 없이도 바로 구현하던 시절) 문구 "프로젝트를 만들었지만 실행 명령이나 동작하는 핵심 흐름을 보고하지 않았다"가 그대로 남아 있었다 — 이 fixture의 새 기대 행동은 승인 전 파일 생성을 금지하므로 "만든 프로젝트"가 있을 수 없어 자기 모순이었다. "청사진에 예상 핵심 흐름(문의 등록, 조회, 상태 변경)이나 실행/검증 명령 후보가 없다"로 고쳤다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 모두 통과 확인. 같은 leftover 문구가 `global/models/codex/harness/fixtures.md`의 동일 Fixture 10(216행)에도 남아 있어, 사용자 확인 후 같은 문장으로 함께 고쳤다.
+
+## 2026-08-12 (문서 언어 정책 추가)
+
+- 목표: 저장소 운영 문서와 로컬 하네스 문서의 본문 언어 기준을 명시한다.
+- 변경: Codex/Claude `AGENT.md`에 문서 언어 섹션을 추가해 본문은 기본적으로 한국어, 파일명·코드 식별자·명령어·스키마 필드명·모델 ID·외부 API 이름은 원문 또는 영어 유지 기준을 정의했다. 양쪽 `project-rules.md`, `validation.md`, `local/README.md`, 문서 검증 스크립트에도 같은 기준을 연결했다.
+- 검증: `bash scripts/validate-docs.sh`, `git diff --check`를 실행한다.
+- 남은 작업: 실제 프로젝트별 로컬 문서에서 영어 본문이 필요한 경우 예외 이유를 남기는 관례를 적용한다.
+- 주의 사항: 루트 `AGENTS.md`/`CLAUDE.md` 같은 짧은 부트스트랩 문서는 영어를 허용하고, 상세 정책은 한국어 문서에 둔다.

@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-19 (DB 접근 시 auto-commit 해제 원칙 추가)
+
+- 목표: 데이터베이스에 접근하는 코드/스크립트가 기본 auto-commit 모드를 쓰지 않고 명시적 트랜잭션으로 커밋/롤백을 제어하도록 저장소 전역 규칙을 추가한다. 사용자가 "Database 접근 시에는 auto-commit 해제한 상태로 하도록" 문서화를 요청했고, 저장소 전체 글로벌 규칙으로 Claude/Codex 양쪽에 반영하기로 확인했다.
+- 변경: `global/models/claude/domain-rules.md`와 `global/models/codex/domain-rules.md`에 "데이터베이스 접근 시 트랜잭션 원칙" 절을 추가해 auto-commit 해제, 트랜잭션 경계 직접 제어, 실패 시 롤백, 예외 시 이유 기록 기준을 명시했다. `.claude/agents/database-specialist.md`와 `.codex/agents/database-specialist.toml`의 책임 목록에도 이 원칙을 확인하는 항목을 추가했고, `scripts/bootstrap-project-root.mjs`의 동일 에이전트 생성 블록도 같은 문구로 맞췄다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture), `node scripts/test-evaluator.mjs`(2 case) 모두 통과.
+- 남은 작업: 실제 DB를 쓰는 local 프로젝트가 생기면 해당 `architecture.md`/`domain-policy.md`에 트랜잭션 격리 수준, 커밋 시점, 예외 처리 방식을 구체적으로 기록해야 한다.
+- 주의 사항: 이 저장소에는 현재 실제 DB를 쓰는 local 프로젝트가 없어 글로벌 원칙 수준으로만 문서화했다. 코드 구현이나 실제 DB 연결 검증은 하지 않았다.
+
 ### 2026-08-14 (Claude 기본 토론 에이전트 세트 추가)
 
 - 목표: Codex에만 있던 기본 토론 서브에이전트 7종(`.codex/agents/*.toml`)과 짝을 맞춰 Claude 쪽 모델 병렬 대응 계약을 채운다. 이전 세션 기록의 "남은 작업"이었다.
@@ -49,11 +57,3 @@
 - 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
 - 남은 작업: 없음.
 - 주의 사항: 테스트를 문서로 보되, 실제 제품 문서나 도메인 정책을 대체하는 것으로 취급하지 않는다.
-
-### 2026-08-12 (문서 언어 정책 추가)
-
-- 목표: 저장소 운영 문서와 로컬 하네스 문서의 본문 언어 기준을 명시한다.
-- 변경: Codex/Claude `AGENT.md`에 문서 언어 섹션을 추가해 본문은 기본적으로 한국어, 파일명·코드 식별자·명령어·스키마 필드명·모델 ID·외부 API 이름은 원문 또는 영어 유지 기준을 정의했다. 양쪽 `project-rules.md`, `validation.md`, `local/README.md`, 문서 검증 스크립트에도 같은 기준을 연결했다.
-- 검증: `bash scripts/validate-docs.sh`, `git diff --check`를 실행한다.
-- 남은 작업: 실제 프로젝트별 로컬 문서에서 영어 본문이 필요한 경우 예외 이유를 남기는 관례를 적용한다.
-- 주의 사항: 루트 `AGENTS.md`/`CLAUDE.md` 같은 짧은 부트스트랩 문서는 영어를 허용하고, 상세 정책은 한국어 문서에 둔다.
