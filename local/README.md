@@ -23,6 +23,7 @@ local/
     validation.md
     handoff-log.md
     model-routing-map.md  # 선택: Codex와 Claude를 함께 쓰는 프로젝트만
+    analysis/             # 선택: 코드/아키텍처 분석 결과 문서 (YYYY-MM-DD-주제.md)
 ```
 
 ## 현재 상태

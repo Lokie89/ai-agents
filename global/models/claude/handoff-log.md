@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-20 (코드 분석 산출물 문서화 규칙 추가)
+
+- 목표: 사용자가 "코드 분석도 토큰을 많이 쓰니 분석할 때마다 내용을 별도 문서로 만들자"고 요청했다. `AskUserQuestion`으로 적용 범위(이 저장소 전역 규칙)와 저장 위치/형식(`local/<project-name>/analysis/`에 Markdown)을 확인한 뒤 반영했다.
+- 변경: `project-rules.md`에 `코드 분석 산출물` 절을 추가해, 코드베이스·아키텍처를 설명·요약·평가하는 분석 작업(짧은 단일 질의·자명한 파일 확인 제외)은 `local/<project-name>/analysis/YYYY-MM-DD-<주제-슬러그>.md`로 남기고, 분석 문서만 단독으로 만들 때는 로컬 하네스 전체 생성을 강제하지 않으며, 재분석 전 기존 문서 확인을 먼저 하도록 명시했다. `AGENT.md`의 `작업 후 규칙`에 이 기준을 참조하는 문장을 추가했다. `local/README.md`의 권장 구조에 선택 항목 `analysis/`를 추가했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`를 실행한다.
+- 남은 작업: Codex 쪽(`global/models/codex/project-rules.md` 등)에는 아직 이 규칙을 반영하지 않았다 — 필요하면 동일한 절을 추가해 두 모델 간 비대칭을 없앤다. `local/_template/`이나 `local/sample-project/`에 `analysis/` 예시 디렉터리는 아직 만들지 않았다.
+- 주의 사항: 이 규칙은 기존 로컬 하네스 필수 파일 6종을 대체하지 않고, 분석 산출물만 별도로 다룬다.
+
 ### 2026-08-19 (DB 접근 시 auto-commit 해제 원칙 추가)
 
 - 목표: 데이터베이스에 접근하는 코드/스크립트가 기본 auto-commit 모드를 쓰지 않고 명시적 트랜잭션으로 커밋/롤백을 제어하도록 저장소 전역 규칙을 추가한다. 사용자가 "Database 접근 시에는 auto-commit 해제한 상태로 하도록" 문서화를 요청했고, 저장소 전체 글로벌 규칙으로 Claude/Codex 양쪽에 반영하기로 확인했다.
@@ -49,11 +57,3 @@
 - 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, TOML 문법 검사, `git diff --check`를 실행한다.
 - 남은 작업: Claude 전용 서브에이전트가 필요하면 별도 `.claude/agents/` 정의를 추가할 수 있다.
 - 주의 사항: 이번 변경은 Claude Workflow opt-in 규칙을 바꾸지 않는다.
-
-### 2026-08-13 (테스트 코드 문서성 명시)
-
-- 목표: 테스트 코드가 기능 구현 시 자주 참조해야 하는 문서 역할도 한다는 기준을 명시한다.
-- 변경: Codex/Claude `roles.md`의 Developer 기준에 "테스트 코드도 문서"라는 원칙과 요구사항, 사용 예, 경계 조건 참고 자료로 활용해야 한다는 문장을 추가했다.
-- 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
-- 남은 작업: 없음.
-- 주의 사항: 테스트를 문서로 보되, 실제 제품 문서나 도메인 정책을 대체하는 것으로 취급하지 않는다.
