@@ -42,6 +42,7 @@
 | `security` | 지원되는 높은 수준 | 보안, 권한, 데이터 노출 위험 분석 |
 | `explorer` | 낮음~중간 | 읽기 중심 탐색과 후보 위치 확인 |
 | `documenter` | 중간 | 문서, 기록, 템플릿 작성 |
+| `doc-lint` | 낮음~중간 | 글로벌 모델 문서와 로컬 하네스 구조·링크·모델 간 대응 점검 |
 | `product-planner` | 높음 | 프로젝트 목적, 주사용자, 연령대, 범위, 사용자 흐름 판단 |
 | `ux-ui-designer` | 높음 | UX/UI, 사용성, 표현 방식, 머무는 시간과 참여 유도 판단 |
 | `frontend-developer` | 중간~높음 | 컴포넌트 구조, 재사용, 프론트엔드·앱 구현 전략 |
@@ -74,10 +75,16 @@ Review the requested diff and report concrete findings first.
 - 탐색과 리뷰 에이전트는 가능한 경우 `sandbox_mode = "read-only"`로 제한한다.
 - 전역 서브에이전트 기본값과 동시 실행 한도는 `.codex/config.toml`의 `[agents]`에서 관리한다.
 
+## 로컬 매핑
+
+같은 프로젝트에서 Claude도 함께 쓰면 Codex의 단순/일반/복잡/고위험 등급과 Claude의 모델 별칭·추론 강도를 `local/<project-name>/model-routing-map.md`에 매핑해 둔다. 작성 예시는 `local/_template/model-routing-map.md`와 `local/sample-project/model-routing-map.md`를 참조한다.
+
 ## 멀티 에이전트 선택
 
 - 사용자가 위임이나 병렬 에이전트 작업을 요청했거나 적용 중인 지침이 요구할 때만 서브에이전트를 사용한다.
 - 코드 탐색, 테스트, 로그 분석, 독립 리뷰처럼 경계가 분명한 읽기 중심 작업을 우선 위임한다.
+- 코드 리뷰나 커밋 전 diff 점검에는 `.codex/agents/reviewer.toml`을 우선 고려한다.
+- 문서 하네스 자체 점검이나 모델 간 정책 대응 확인에는 `.codex/agents/doc-lint.toml`을 우선 고려한다.
 - 하네스, 에이전트 운영 정책, 검증 기준, 실패 케이스, 산출물 스키마처럼 문서화 판단이 핵심인 토론에는 기본 커스텀 에이전트 `.codex/agents/harness-deliberator.toml`을 우선 고려한다.
 - 제품·기능 토론에는 기본 커스텀 에이전트 세트인 `.codex/agents/product-planner.toml`, `.codex/agents/ux-ui-designer.toml`, `.codex/agents/frontend-developer.toml`, `.codex/agents/backend-developer.toml`, `.codex/agents/database-specialist.toml`, `.codex/agents/product-tester.toml`을 목적에 맞게 조합한다.
 - 더 나은 의견 형성이 목표인 작업은 공통 하네스의 `global/harness/deliberation.md`를 따라 Orchestrator가 독립 의견, 비판, 수정, 합성, 검증 라운드를 통제한다.

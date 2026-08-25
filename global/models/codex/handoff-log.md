@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-08-25 (Codex 리뷰·문서 점검 에이전트 보강)
+
+- 목표: Claude 쪽에 존재하는 `reviewer`/`doc-lint` 예시 서브에이전트와 비교해 Codex 기본 에이전트 세트의 누락을 보완한다.
+- 변경: `.codex/agents/reviewer.toml`과 `.codex/agents/doc-lint.toml`을 추가했다. `global/models/codex/model-routing.md`에 코드 리뷰와 문서 하네스 점검 시 두 에이전트를 우선 고려하는 기준, Claude와 함께 쓰는 프로젝트의 `model-routing-map.md` 안내를 추가했다. `scripts/bootstrap-project-root.mjs`와 `scripts/validate-docs.sh`가 새 Codex 에이전트 파일을 생성·검증하도록 갱신했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 없음.
+- 주의 사항: Claude 전용 `Workflow`, hook, `AskUserQuestion`, Plan Mode 도구명은 Codex 문서로 옮기지 않았다. Codex의 리뷰 재기획 확인은 여전히 문서 기준의 수동 Reviewer 체크다.
+
 ### 2026-08-20 (코드 분석 산출물 문서화 규칙 동기화)
 
 - 목표: Claude 쪽에만 반영된 코드 분석 산출물 문서화 규칙을 확인하고 Codex 쪽에도 동일한 공통 정책을 적용한다.
@@ -49,11 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, TOML 문법 검사, `git diff --check`를 실행한다.
 - 남은 작업: 실제 Codex 런타임에서 커스텀 에이전트들이 로드되는지는 다음 세션에서 호출해 확인할 수 있다.
 - 주의 사항: 에이전트에는 모델을 고정하지 않아 현재 세션, 명시적 spawn 값, `[agents]` 기본값, 부모 설정을 상속하게 했다.
-
-### 2026-08-13 (테스트 코드 문서성 명시)
-
-- 목표: 테스트 코드가 기능 구현 시 자주 참조해야 하는 문서 역할도 한다는 기준을 명시한다.
-- 변경: Codex/Claude `roles.md`의 Developer 기준에 "테스트 코드도 문서"라는 원칙과 요구사항, 사용 예, 경계 조건 참고 자료로 활용해야 한다는 문장을 추가했다.
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
-- 남은 작업: 없음.
-- 주의 사항: 테스트를 문서로 보되, 실제 제품 문서나 도메인 정책을 대체하는 것으로 취급하지 않는다.
