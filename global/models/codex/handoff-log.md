@@ -26,6 +26,22 @@
 - 남은 작업: 없음.
 - 주의 사항: 요약은 최신 글로벌 기록과 현재 요청에 해당하는 로컬 프로젝트 기록을 근거로 하며, 첫 응답 뒤에는 반복하지 않는다.
 
+### 2026-08-27 (nested ai-agents 부모 진입점 자동 생성 보강)
+
+- 목표: `ai-agents/` 디렉터리를 프로젝트 루트 안에 넣어 쓰는 경우에도 Codex가 한 번 지침을 읽은 뒤 부모 루트의 `AGENTS.md`를 자동으로 보강할 수 있게 한다.
+- 변경: `scripts/install-parent-entrypoints.mjs`를 추가해 부모 루트에 얇은 `AGENTS.md`/`CLAUDE.md` 포인터를 생성하도록 했다. 기존 파일은 덮어쓰지 않으며, 부모가 프로젝트 루트처럼 보이지 않으면 생성하지 않는다. 루트 `AGENTS.md`/`CLAUDE.md`, Codex/Claude `AGENT.md`, `project-rules.md`, `validation.md`, `README.md`, 기존 부트스트랩 스크립트와 문서 검증 스크립트를 같은 기준으로 갱신했다.
+- 검증: 임시 nested 프로젝트에서 `node .../install-parent-entrypoints.mjs` 생성/재실행 skip 동작을 확인했다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `node scripts/ensure-entrypoints.mjs`, `git diff --check` 통과.
+- 남은 작업: 실제 다른 프로젝트 루트에 `ai-agents/`를 넣고 Codex가 처음 읽는 세션에서 부모 루트 진입점 생성이 기대대로 작동하는지 사례를 확인할 수 있다.
+- 주의 사항: 스크립트는 부모 루트에 쓰는 작업이므로 Codex 파일시스템 정책이 허용하는 경우에만 실행된다. 기존 `AGENTS.md`/`CLAUDE.md`가 있으면 내용을 병합하지 않고 건너뛴다.
+
+### 2026-08-27 (외부 연동 인터페이스 문서화 원칙 추가)
+
+- 목표: 외부 연동 어댑터, API, 메시지, 파일 교환을 추가하거나 변경할 때 항상 인터페이스 문서를 남기도록 저장소 전역 규칙을 명시한다.
+- 변경: Codex/Claude `project-rules.md`에 외부 연동 인터페이스 문서화 절을 추가하고, 새 프로젝트 완료 기준과 로컬 하네스 품질 기준에 연결했다. Codex/Claude `validation.md`와 실패 케이스에 인터페이스 문서 누락 검증을 추가했다. `local/_template/architecture.md`, `local/sample-project/architecture.md`, `local/README.md`에 인터페이스 문서 위치와 최소 계약 항목을 반영했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 통과.
+- 남은 작업: 실제 외부 연동 프로젝트에서는 `architecture.md`, `README.md`, `docs/` 중 프로젝트 구조에 맞는 곳에 구체 인터페이스 문서를 작성해야 한다.
+- 주의 사항: 비밀값은 실제 값을 쓰지 않고 이름, 목적, 필요 여부만 기록한다. 외부 제공자의 최신 API 동작과 제한은 공식 문서나 1차 출처로 확인한다.
+
 ### 2026-08-25 (Codex 리뷰·문서 점검 에이전트 보강)
 
 - 목표: Claude 쪽에 존재하는 `reviewer`/`doc-lint` 예시 서브에이전트와 비교해 Codex 기본 에이전트 세트의 누락을 보완한다.
@@ -41,19 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
 - 남은 작업: 없음.
 - 주의 사항: Claude 전용 hook, 도구명, Workflow·서브에이전트 정책은 Codex에 그대로 이식하지 않았다. 분석 문서만 만드는 작업은 로컬 하네스 전체 생성을 강제하지 않는다.
-
-### 2026-08-19 (DB 접근 시 auto-commit 해제 원칙 추가)
-
-- 목표: 데이터베이스에 접근하는 코드/스크립트가 기본 auto-commit 모드를 쓰지 않고 명시적 트랜잭션으로 커밋/롤백을 제어하도록 저장소 전역 규칙을 추가한다. Claude 세션에서 사용자가 "Database 접근 시에는 auto-commit 해제한 상태로 하도록" 문서화를 요청했고, 저장소 전체 글로벌 규칙으로 Claude/Codex 양쪽에 반영하기로 확인했다.
-- 변경: `global/models/codex/domain-rules.md`(및 대응하는 `global/models/claude/domain-rules.md`)에 "데이터베이스 접근 시 트랜잭션 원칙" 절을 추가해 auto-commit 해제, 트랜잭션 경계 직접 제어, 실패 시 롤백, 예외 시 이유 기록 기준을 명시했다. `.codex/agents/database-specialist.toml`(및 `.claude/agents/database-specialist.md`)의 책임 목록에도 이 원칙을 확인하는 항목을 추가했고, `scripts/bootstrap-project-root.mjs`의 두 에이전트 생성 블록도 같은 문구로 맞췄다.
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture), `node scripts/test-evaluator.mjs`(2 case) 모두 통과.
-- 남은 작업: 실제 DB를 쓰는 local 프로젝트가 생기면 해당 `architecture.md`/`domain-policy.md`에 트랜잭션 격리 수준, 커밋 시점, 예외 처리 방식을 구체적으로 기록해야 한다.
-- 주의 사항: 이 저장소에는 현재 실제 DB를 쓰는 local 프로젝트가 없어 글로벌 원칙 수준으로만 문서화했다. 이 세션 자체는 Claude에서 진행됐고, 두 모델 문서 세트를 동시에 갱신한 뒤 양쪽 handoff-log에 같은 내용을 기록했다.
-
-### 2026-08-13 (프로젝트 루트 부트스트랩 확장)
-
-- 목표: 이 문서 세트를 다른 프로젝트에 복사했을 때 루트 진입 문서와 기본 Codex 에이전트 세트를 자동으로 보강할 수 있게 한다.
-- 변경: `scripts/bootstrap-project-root.mjs`를 추가해 `AGENTS.md`, `CLAUDE.md`, `.codex/agents/*.toml` 기본 세트를 생성하도록 했다. 기존 파일은 덮어쓰지 않는다. `README.md`, Codex/Claude `project-rules.md`, Codex/Claude `validation.md`, `scripts/validate-docs.sh`에 새 명령과 검증 기준을 연결했다.
-- 검증: `node scripts/bootstrap-project-root.mjs`, 임시 디렉터리 생성 검증, `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
-- 남은 작업: 없음.
-- 주의 사항: `node scripts/ensure-entrypoints.mjs`는 루트 진입 문서만 보강하는 경량 명령으로 유지한다.

@@ -72,4 +72,10 @@ node scripts/bootstrap-project-root.mjs
 node scripts/ensure-entrypoints.mjs
 ```
 
+`ai-agents/` 디렉터리 자체를 프로젝트 루트 안에 넣어 쓰는 경우에는 부모 루트의 자동 진입 문서가 필요합니다. Codex나 Claude가 `ai-agents` 안의 지침을 한 번이라도 읽었고 부모 루트에 `AGENTS.md` 또는 `CLAUDE.md`가 없다면 아래 명령으로 부모 루트에 얇은 포인터 문서를 생성합니다. 이미 있는 파일은 덮어쓰지 않으며, 부모 폴더가 프로젝트 루트처럼 보이지 않으면 생성하지 않습니다.
+
+```sh
+node scripts/install-parent-entrypoints.mjs
+```
+
 현재 저장소는 문서 정책과 정적 평가 계약까지 제공하며, 모델 호출, checkpoint 저장, trace 수집, queue, 배포를 수행하는 프로덕션 런타임은 포함하지 않습니다.

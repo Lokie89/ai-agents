@@ -102,3 +102,19 @@
 - 검증: Codex 세션에서 `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, TOML 문법 검사, `git diff --check`를 실행한다.
 - 남은 작업: Claude 전용 서브에이전트가 필요하면 별도 `.claude/agents/` 정의를 추가할 수 있다.
 - 주의 사항: 이번 변경은 Claude Workflow opt-in 규칙을 바꾸지 않는다.
+
+## 2026-08-13 (프로젝트 루트 부트스트랩 확장)
+
+- 목표: 이 문서 세트를 다른 프로젝트에 복사했을 때 루트 진입 문서와 기본 Codex 에이전트 세트를 자동으로 보강할 수 있게 한다.
+- 변경: `scripts/bootstrap-project-root.mjs`를 추가해 `AGENTS.md`, `CLAUDE.md`, `.codex/agents/*.toml` 기본 세트를 생성하도록 했다. 기존 파일은 덮어쓰지 않는다. `README.md`, Codex/Claude `project-rules.md`, Codex/Claude `validation.md`, `scripts/validate-docs.sh`에 새 명령과 검증 기준을 연결했다.
+- 검증: Codex 세션에서 `node scripts/bootstrap-project-root.mjs`, 임시 디렉터리 생성 검증, `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 없음.
+- 주의 사항: Claude 전용 `.claude/agents/` 생성은 포함하지 않았다.
+
+## 2026-08-14 (Claude 기본 토론 에이전트 세트 추가)
+
+- 목표: Codex에만 있던 기본 토론 서브에이전트 7종(`.codex/agents/*.toml`)과 짝을 맞춰 Claude 쪽 모델 병렬 대응 계약을 채운다. 이전 세션 기록의 "남은 작업"이었다.
+- 변경: `.claude/agents/harness-deliberator.md`, `product-planner.md`, `ux-ui-designer.md`, `frontend-developer.md`, `backend-developer.md`, `database-specialist.md`, `product-tester.md`를 추가했다. `global/models/claude/model-routing.md`에 각 에이전트의 사용 기준과 모델/추론 강도를 연결하고, Codex 기본 세트와 역할이 대응하며 한쪽만 갱신하지 않는다는 문구를 추가했다. `scripts/bootstrap-project-root.mjs`와 `scripts/validate-docs.sh`가 이 파일들도 생성/검증하도록 갱신했고, `README.md`와 양쪽 `project-rules.md`의 안내 문구도 맞췄다. (커밋 `7a71646`)
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 모두 통과.
+- 남은 작업: 없음.
+- 주의 사항: 이 기록은 커밋 당시 남기지 못해 뒤늦게 추가했다. `doc-lint.md`, `reviewer.md` 서브에이전트는 이보다 앞선 커밋(`5747b32`)에서 이미 존재했으므로 이번 변경 범위에 포함하지 않았다.

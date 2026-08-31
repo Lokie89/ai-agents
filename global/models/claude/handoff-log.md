@@ -26,6 +26,22 @@
 - 남은 작업: 없음.
 - 주의 사항: 요약은 최신 글로벌 기록과 현재 요청에 해당하는 로컬 프로젝트 기록을 근거로 하며, 첫 응답 뒤에는 반복하지 않는다.
 
+### 2026-08-27 (nested ai-agents 부모 진입점 자동 생성 보강)
+
+- 목표: `ai-agents/` 디렉터리를 프로젝트 루트 안에 넣어 쓰는 경우에도 Claude가 한 번 지침을 읽은 뒤 부모 루트의 `CLAUDE.md`를 자동으로 보강할 수 있게 한다.
+- 변경: `scripts/install-parent-entrypoints.mjs`를 추가해 부모 루트에 얇은 `AGENTS.md`/`CLAUDE.md` 포인터를 생성하도록 했다. 기존 파일은 덮어쓰지 않으며, 부모가 프로젝트 루트처럼 보이지 않으면 생성하지 않는다. 루트 `AGENTS.md`/`CLAUDE.md`, Codex/Claude `AGENT.md`, `project-rules.md`, `validation.md`, `README.md`, 기존 부트스트랩 스크립트와 문서 검증 스크립트를 같은 기준으로 갱신했다.
+- 검증: 임시 nested 프로젝트에서 `node .../install-parent-entrypoints.mjs` 생성/재실행 skip 동작을 확인했다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `node scripts/ensure-entrypoints.mjs`, `git diff --check` 통과.
+- 남은 작업: 실제 다른 프로젝트 루트에 `ai-agents/`를 넣고 Claude가 처음 읽는 세션에서 부모 루트 진입점 생성이 기대대로 작동하는지 사례를 확인할 수 있다.
+- 주의 사항: 스크립트는 부모 루트에 쓰는 작업이므로 도구 파일시스템 정책이 허용하는 경우에만 실행된다. 기존 `AGENTS.md`/`CLAUDE.md`가 있으면 내용을 병합하지 않고 건너뛴다.
+
+### 2026-08-27 (외부 연동 인터페이스 문서화 원칙 추가)
+
+- 목표: 외부 연동 어댑터, API, 메시지, 파일 교환을 추가하거나 변경할 때 항상 인터페이스 문서를 남기도록 저장소 전역 규칙을 명시한다.
+- 변경: Codex/Claude `project-rules.md`에 외부 연동 인터페이스 문서화 절을 추가하고, 새 프로젝트 완료 기준과 로컬 하네스 품질 기준에 연결했다. Codex/Claude `validation.md`와 실패 케이스에 인터페이스 문서 누락 검증을 추가했다. `local/_template/architecture.md`, `local/sample-project/architecture.md`, `local/README.md`에 인터페이스 문서 위치와 최소 계약 항목을 반영했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 통과.
+- 남은 작업: 실제 외부 연동 프로젝트에서는 `architecture.md`, `README.md`, `docs/` 중 프로젝트 구조에 맞는 곳에 구체 인터페이스 문서를 작성해야 한다.
+- 주의 사항: 비밀값은 실제 값을 쓰지 않고 이름, 목적, 필요 여부만 기록한다. 외부 제공자의 최신 API 동작과 제한은 공식 문서나 1차 출처로 확인한다.
+
 ### 2026-08-20 (코드 분석 산출물 문서화 규칙 추가)
 
 - 목표: 사용자가 "코드 분석도 토큰을 많이 쓰니 분석할 때마다 내용을 별도 문서로 만들자"고 요청했다. `AskUserQuestion`으로 적용 범위(이 저장소 전역 규칙)와 저장 위치/형식(`local/<project-name>/analysis/`에 Markdown)을 확인한 뒤 반영했다.
@@ -41,19 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture), `node scripts/test-evaluator.mjs`(2 case) 모두 통과.
 - 남은 작업: 실제 DB를 쓰는 local 프로젝트가 생기면 해당 `architecture.md`/`domain-policy.md`에 트랜잭션 격리 수준, 커밋 시점, 예외 처리 방식을 구체적으로 기록해야 한다.
 - 주의 사항: 이 저장소에는 현재 실제 DB를 쓰는 local 프로젝트가 없어 글로벌 원칙 수준으로만 문서화했다. 코드 구현이나 실제 DB 연결 검증은 하지 않았다.
-
-### 2026-08-14 (Claude 기본 토론 에이전트 세트 추가)
-
-- 목표: Codex에만 있던 기본 토론 서브에이전트 7종(`.codex/agents/*.toml`)과 짝을 맞춰 Claude 쪽 모델 병렬 대응 계약을 채운다. 이전 세션 기록의 "남은 작업"이었다.
-- 변경: `.claude/agents/harness-deliberator.md`, `product-planner.md`, `ux-ui-designer.md`, `frontend-developer.md`, `backend-developer.md`, `database-specialist.md`, `product-tester.md`를 추가했다. `global/models/claude/model-routing.md`에 각 에이전트의 사용 기준과 모델/추론 강도를 연결하고, Codex 기본 세트와 역할이 대응하며 한쪽만 갱신하지 않는다는 문구를 추가했다. `scripts/bootstrap-project-root.mjs`와 `scripts/validate-docs.sh`가 이 파일들도 생성/검증하도록 갱신했고, `README.md`와 양쪽 `project-rules.md`의 안내 문구도 맞췄다. (커밋 `7a71646`)
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 모두 통과.
-- 남은 작업: 없음.
-- 주의 사항: 이 기록은 커밋 당시 남기지 못해 뒤늦게 추가했다. `doc-lint.md`, `reviewer.md` 서브에이전트는 이보다 앞선 커밋(`5747b32`)에서 이미 존재했으므로 이번 변경 범위에 포함하지 않았다.
-
-### 2026-08-13 (프로젝트 루트 부트스트랩 확장)
-
-- 목표: 이 문서 세트를 다른 프로젝트에 복사했을 때 루트 진입 문서와 기본 Codex 에이전트 세트를 자동으로 보강할 수 있게 한다.
-- 변경: `scripts/bootstrap-project-root.mjs`를 추가해 `AGENTS.md`, `CLAUDE.md`, `.codex/agents/*.toml` 기본 세트를 생성하도록 했다. 기존 파일은 덮어쓰지 않는다. `README.md`, Codex/Claude `project-rules.md`, Codex/Claude `validation.md`, `scripts/validate-docs.sh`에 새 명령과 검증 기준을 연결했다.
-- 검증: Codex 세션에서 `node scripts/bootstrap-project-root.mjs`, 임시 디렉터리 생성 검증, `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
-- 남은 작업: 없음.
-- 주의 사항: Claude 전용 `.claude/agents/` 생성은 포함하지 않았다.

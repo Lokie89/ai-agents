@@ -47,6 +47,7 @@ Codex에 내장된 권한, 샌드박스, 파괴적 작업 확인, 사용자 변�
 
 - 현재 작업 디렉터리의 루트 `AGENTS.md`를 진입점으로 삼고, 작업 대상 하위 디렉터리에 추가 `AGENTS.md`가 있으면 그 파일의 지침을 함께 적용한다.
 - 하위 `AGENTS.md`는 해당 하위 트리 안에서만 적용하며, 충돌하면 더 가까운 하위 지침을 우선하되 Codex 시스템 규칙은 항상 최우선이다.
+- 이 `ai-agents` 디렉터리가 다른 프로젝트 루트 아래에 중첩되어 있고 부모 루트에 `AGENTS.md`가 없으면, 파일시스템 정책이 허용하는 범위에서 `node scripts/install-parent-entrypoints.mjs`로 부모 루트 진입점을 생성한다. 기존 파일은 덮어쓰지 않는다.
 - Windows PowerShell 세션에서는 문서가 깨져 보이지 않도록 `Get-Content -Encoding UTF8`처럼 명시적 인코딩을 사용한다.
 - 파일 탐색과 상태 확인은 `rg`, `rg --files`, `git status`, `git diff`를 우선 사용하고, 대량 출력은 필요한 결론 중심으로 줄인다.
 - 작업 전 dirty worktree를 확인하고, 사용자가 만들었거나 출처가 불명확한 변경은 되돌리거나 덮어쓰지 않는다.
