@@ -26,6 +26,14 @@
 - 남은 작업: 없음.
 - 주의 사항: 요약은 최신 글로벌 기록과 현재 요청에 해당하는 로컬 프로젝트 기록을 근거로 하며, 첫 응답 뒤에는 반복하지 않는다.
 
+### 2026-08-27 (push 실패 시 원격 충돌 자동 해결 금지)
+
+- 목표: push 요청 또는 자동 push 설정이 있더라도 원격 저장소 이력 충돌이 발생하면 에이전트가 merge/rebase/conflict resolution으로 해결하지 않고 사용자에게 넘기도록 규칙을 명시한다.
+- 변경: Codex/Claude `tools.md`에 `Git 원격 동기화 경계` 절을 추가해 push 실패 시 원인 보고 후 중단하고, `git pull`, `git merge`, `git rebase`, conflict resolution, force push를 임의로 실행하지 않도록 했다. 양쪽 실패 케이스와 검증 문서, 문서 검증 스크립트에 같은 기준을 연결했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 없음.
+- 주의 사항: 사용자가 merge/rebase까지 명시하더라도 원격 이력 변경이나 충돌 해결이 포함되면 별도 승인과 현재 변경 보호 확인 없이는 진행하지 않는다.
+
 ### 2026-08-27 (nested ai-agents 부모 진입점 자동 생성 보강)
 
 - 목표: `ai-agents/` 디렉터리를 프로젝트 루트 안에 넣어 쓰는 경우에도 Claude가 한 번 지침을 읽은 뒤 부모 루트의 `CLAUDE.md`를 자동으로 보강할 수 있게 한다.
@@ -49,11 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`를 실행한다.
 - 남은 작업: Codex 쪽(`global/models/codex/project-rules.md` 등)에는 아직 이 규칙을 반영하지 않았다 — 필요하면 동일한 절을 추가해 두 모델 간 비대칭을 없앤다. `local/_template/`이나 `local/sample-project/`에 `analysis/` 예시 디렉터리는 아직 만들지 않았다.
 - 주의 사항: 이 규칙은 기존 로컬 하네스 필수 파일 6종을 대체하지 않고, 분석 산출물만 별도로 다룬다.
-
-### 2026-08-19 (DB 접근 시 auto-commit 해제 원칙 추가)
-
-- 목표: 데이터베이스에 접근하는 코드/스크립트가 기본 auto-commit 모드를 쓰지 않고 명시적 트랜잭션으로 커밋/롤백을 제어하도록 저장소 전역 규칙을 추가한다. 사용자가 "Database 접근 시에는 auto-commit 해제한 상태로 하도록" 문서화를 요청했고, 저장소 전체 글로벌 규칙으로 Claude/Codex 양쪽에 반영하기로 확인했다.
-- 변경: `global/models/claude/domain-rules.md`와 `global/models/codex/domain-rules.md`에 "데이터베이스 접근 시 트랜잭션 원칙" 절을 추가해 auto-commit 해제, 트랜잭션 경계 직접 제어, 실패 시 롤백, 예외 시 이유 기록 기준을 명시했다. `.claude/agents/database-specialist.md`와 `.codex/agents/database-specialist.toml`의 책임 목록에도 이 원칙을 확인하는 항목을 추가했고, `scripts/bootstrap-project-root.mjs`의 동일 에이전트 생성 블록도 같은 문구로 맞췄다.
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`(6 fixture), `node scripts/test-evaluator.mjs`(2 case) 모두 통과.
-- 남은 작업: 실제 DB를 쓰는 local 프로젝트가 생기면 해당 `architecture.md`/`domain-policy.md`에 트랜잭션 격리 수준, 커밋 시점, 예외 처리 방식을 구체적으로 기록해야 한다.
-- 주의 사항: 이 저장소에는 현재 실제 DB를 쓰는 local 프로젝트가 없어 글로벌 원칙 수준으로만 문서화했다. 코드 구현이나 실제 DB 연결 검증은 하지 않았다.

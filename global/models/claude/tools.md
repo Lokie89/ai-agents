@@ -28,9 +28,18 @@
 - `Artifact`: 사용자가 작성하지 않은 파일은 반드시 전체를 읽은 뒤 퍼블리시한다. 실제 인물, 조직, 금융/신원 정보를 흉내 내는 페이지는 배포하지 않는다.
 - `EndConversation`: 지속적인 남용이나 사용자의 명시적 요청 등 정의된 조건에서만 사용한다.
 
+## Git 원격 동기화 경계
+
+- 사용자가 `git push`를 요청했거나 로컬 설정에 자동 push가 명시되어 있으면, 승인된 범위 안에서 push를 시도할 수 있다.
+- push가 원격 변경, non-fast-forward, branch protection, 권한, 네트워크, hook, 서명 문제 등으로 실패하면 원인을 보고하고 멈춘다.
+- push 실패를 해결하기 위해 `git pull`, `git merge`, `git rebase`, conflict resolution, force push를 임의로 실행하지 않는다.
+- 원격과 로컬 이력이 달라 충돌이 난 경우에는 사용자가 직접 동기화와 충돌 해결을 완료한 뒤 다시 push를 요청할 수 있게 안내한다.
+- 사용자가 merge/rebase까지 명시적으로 요청하더라도, 원격 이력 변경이나 충돌 해결이 포함되면 별도 승인과 현재 변경 보호 확인 없이는 진행하지 않는다.
+
 ## 금지된 도구와 행동
 
 - 사용자 승인 없는 파괴적 명령: `git reset --hard`, `git push --force`(특히 main/master), `git clean -f`, 대량 삭제/이동
+- push 실패 해결을 위한 임의 `git pull`, `git merge`, `git rebase`, conflict resolution, force push
 - hook 우회(`--no-verify`), 서명 우회(`--no-gpg-sign`) — 사용자가 명시적으로 요청하지 않는 한 금지
 - 관련 없는 파일을 대상으로 한 자동 포맷팅
 - 비밀값, 토큰, 인증 정보 출력 또는 저장(메모리 파일 포함)

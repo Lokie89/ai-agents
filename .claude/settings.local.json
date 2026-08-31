@@ -18,7 +18,20 @@
       "Bash(echo \"EXIT_DOCS:$?\")",
       "Bash(echo \"EXIT_HARNESS:$?\")",
       "Bash(echo \"EXIT_EVAL:$?\")",
-      "Bash(echo \"EXIT_DIFFCHECK:$?\")"
+      "Bash(echo \"EXIT_DIFFCHECK:$?\")",
+      "Bash(git stash *)",
+      "Bash(git status *)",
+      "Bash(git fsck *)",
+      "Bash(git checkout *)",
+      "Bash(git push *)",
+      "Bash(grep -rln *)",
+      "Bash(node -e ' *)",
+      "Bash(git commit *)",
+      "WebSearch",
+      "Bash(python3 -c ' *)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('.claude/settings.local.json','utf8'\\)\\); console.log\\('valid json'\\)\")",
+      "Bash(node -c scripts/validate-docs.sh)",
+      "Bash(bash -n scripts/validate-docs.sh)"
     ]
   }
 }

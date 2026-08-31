@@ -18,9 +18,18 @@
 - PowerShell 명령: 파이프, 리디렉션, 와일드카드, 인코딩 기본값이 결과에 영향을 줄 수 있으므로 필요한 옵션을 명시한다.
 - 웹 확인: 최신성이 중요하거나 사용자가 확인을 요청한 경우에만 사용하고, 공식 문서나 1차 출처를 우선한다.
 
+## Git 원격 동기화 경계
+
+- 사용자가 `git push`를 요청했거나 로컬 설정에 자동 push가 명시되어 있으면, 승인된 범위 안에서 push를 시도할 수 있다.
+- push가 원격 변경, non-fast-forward, branch protection, 권한, 네트워크, hook, 서명 문제 등으로 실패하면 원인을 보고하고 멈춘다.
+- push 실패를 해결하기 위해 `git pull`, `git merge`, `git rebase`, conflict resolution, force push를 임의로 실행하지 않는다.
+- 원격과 로컬 이력이 달라 충돌이 난 경우에는 사용자가 직접 동기화와 충돌 해결을 완료한 뒤 다시 push를 요청할 수 있게 안내한다.
+- 사용자가 merge/rebase까지 명시적으로 요청하더라도, 원격 이력 변경이나 충돌 해결이 포함되면 별도 승인과 현재 변경 보호 확인 없이는 진행하지 않는다.
+
 ## 금지된 도구와 행동
 
 - 사용자 승인 없는 파괴적 명령: `git reset --hard`, `git push --force`(특히 main/master), `git clean -f`, 대량 삭제/이동
+- push 실패 해결을 위한 임의 `git pull`, `git merge`, `git rebase`, conflict resolution, force push
 - hook 우회(`--no-verify`), 서명 우회(`--no-gpg-sign`) — 사용자가 명시적으로 요청하지 않는 한 금지
 - 관련 없는 파일을 대상으로 한 자동 포맷팅
 - 비밀값 출력 또는 저장

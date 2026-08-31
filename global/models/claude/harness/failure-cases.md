@@ -67,6 +67,7 @@
 ## 도구 사용 위반
 
 - 승인 없이 파괴적 명령(`git reset --hard`, `git push --force`, `git clean -f` 등)을 실행했다.
+- push 실패나 원격 이력 충돌을 해결한다며 사용자 해결 없이 `git pull`, `git merge`, `git rebase`, conflict resolution, force push를 실행했다.
 - hook 우회(`--no-verify`), 서명 우회(`--no-gpg-sign`)를 사용자 요청 없이 사용했다.
 - 비밀값, 토큰, 인증 정보를 출력하거나 저장했다(메모리 시스템 포함).
 - 네트워크나 권한 상승이 필요한 작업의 필요성과 영향을 설명하지 않았다.
