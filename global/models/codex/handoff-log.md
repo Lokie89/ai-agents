@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-09-09 (보안 검토 에이전트 추가)
+
+- 목표: 인프라·백엔드·프론트엔드 보안 위험을 전담해 점검하는 Codex 에이전트를 기본 세트에 추가한다.
+- 변경: `.codex/agents/security-reviewer.toml`을 읽기 전용 증거 기반 검토 에이전트로 추가했다. 인프라, 백엔드, 프론트엔드 위험과 추가 검증 필요 사항을 분리해 보고하며 자동 수정이나 보안 보증을 하지 않는다. `model-routing.md`, 프로젝트 루트 부트스트랩 스크립트, 문서 검증 스크립트에 이 에이전트를 연결했다.
+- 검증: `python3 -c 'import tomllib; ...'`, `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행해 통과했다.
+- 남은 작업: 없음.
+- 주의 사항: 런타임, 클라우드 계정, 의존성 스캐너, 침투 테스트가 필요한 보안 증거는 코드 검토와 구분해 `verification_needed`에 남긴다.
+
 ### 2026-08-30 (세션 첫 대화 인계 요약)
 
 - 목표: 새 세션의 첫 응답에서 최근 작업, 진행 중인 내용, 남은 작업을 알려주도록 한다.
@@ -49,11 +57,3 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 통과.
 - 남은 작업: 실제 외부 연동 프로젝트에서는 `architecture.md`, `README.md`, `docs/` 중 프로젝트 구조에 맞는 곳에 구체 인터페이스 문서를 작성해야 한다.
 - 주의 사항: 비밀값은 실제 값을 쓰지 않고 이름, 목적, 필요 여부만 기록한다. 외부 제공자의 최신 API 동작과 제한은 공식 문서나 1차 출처로 확인한다.
-
-### 2026-08-25 (Codex 리뷰·문서 점검 에이전트 보강)
-
-- 목표: Claude 쪽에 존재하는 `reviewer`/`doc-lint` 예시 서브에이전트와 비교해 Codex 기본 에이전트 세트의 누락을 보완한다.
-- 변경: `.codex/agents/reviewer.toml`과 `.codex/agents/doc-lint.toml`을 추가했다. `global/models/codex/model-routing.md`에 코드 리뷰와 문서 하네스 점검 시 두 에이전트를 우선 고려하는 기준, Claude와 함께 쓰는 프로젝트의 `model-routing-map.md` 안내를 추가했다. `scripts/bootstrap-project-root.mjs`와 `scripts/validate-docs.sh`가 새 Codex 에이전트 파일을 생성·검증하도록 갱신했다.
-- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
-- 남은 작업: 없음.
-- 주의 사항: Claude 전용 `Workflow`, hook, `AskUserQuestion`, Plan Mode 도구명은 Codex 문서로 옮기지 않았다. Codex의 리뷰 재기획 확인은 여전히 문서 기준의 수동 Reviewer 체크다.

@@ -84,6 +84,7 @@ Review the requested diff and report concrete findings first.
 - 사용자가 위임이나 병렬 에이전트 작업을 요청했거나 적용 중인 지침이 요구할 때만 서브에이전트를 사용한다.
 - 코드 탐색, 테스트, 로그 분석, 독립 리뷰처럼 경계가 분명한 읽기 중심 작업을 우선 위임한다.
 - 코드 리뷰나 커밋 전 diff 점검에는 `.codex/agents/reviewer.toml`을 우선 고려한다.
+- 인프라, 백엔드, 프론트엔드의 보안 위험을 점검하는 계획·변경·구현 검토에는 `.codex/agents/security-reviewer.toml`을 우선 고려한다. 이 에이전트는 읽기 전용으로 증거 기반의 위험을 보고하며, 보안 보증이나 자동 수정은 수행하지 않는다.
 - 문서 하네스 자체 점검이나 모델 간 정책 대응 확인에는 `.codex/agents/doc-lint.toml`을 우선 고려한다.
 - 하네스, 에이전트 운영 정책, 검증 기준, 실패 케이스, 산출물 스키마처럼 문서화 판단이 핵심인 토론에는 기본 커스텀 에이전트 `.codex/agents/harness-deliberator.toml`을 우선 고려한다.
 - 제품·기능 토론에는 기본 커스텀 에이전트 세트인 `.codex/agents/product-planner.toml`, `.codex/agents/ux-ui-designer.toml`, `.codex/agents/frontend-developer.toml`, `.codex/agents/backend-developer.toml`, `.codex/agents/database-specialist.toml`, `.codex/agents/product-tester.toml`을 목적에 맞게 조합한다.

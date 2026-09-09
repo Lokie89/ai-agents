@@ -145,3 +145,11 @@
 - 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
 - 남은 작업: 없음.
 - 주의 사항: Claude 전용 hook, 도구명, Workflow·서브에이전트 정책은 Codex에 그대로 이식하지 않았다. 분석 문서만 만드는 작업은 로컬 하네스 전체 생성을 강제하지 않는다.
+
+## 2026-08-25 (Codex 리뷰·문서 점검 에이전트 보강)
+
+- 목표: Claude 쪽에 존재하는 `reviewer`/`doc-lint` 예시 서브에이전트와 비교해 Codex 기본 에이전트 세트의 누락을 보완한다.
+- 변경: `.codex/agents/reviewer.toml`과 `.codex/agents/doc-lint.toml`을 추가했다. `global/models/codex/model-routing.md`에 코드 리뷰와 문서 하네스 점검 시 두 에이전트를 우선 고려하는 기준, Claude와 함께 쓰는 프로젝트의 `model-routing-map.md` 안내를 추가했다. `scripts/bootstrap-project-root.mjs`와 `scripts/validate-docs.sh`가 새 Codex 에이전트 파일을 생성·검증하도록 갱신했다.
+- 검증: `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check`를 실행한다.
+- 남은 작업: 없음.
+- 주의 사항: Claude 전용 `Workflow`, hook, `AskUserQuestion`, Plan Mode 도구명은 Codex 문서로 옮기지 않았다. Codex의 리뷰 재기획 확인은 여전히 문서 기준의 수동 Reviewer 체크다.
