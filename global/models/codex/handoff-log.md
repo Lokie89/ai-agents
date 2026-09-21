@@ -18,6 +18,14 @@
 
 ## 현재 기록
 
+### 2026-09-21 (낮은 모델 우선 구현과 독립 Reviewer 검수)
+
+- 목표: 구현을 가장 낮은 가용 모델·낮은 추론 강도에서 시작하고, 필요한 경우에만 승격하며, 구현보다 높은 등급의 Reviewer로 결과를 독립 검수하는 기준을 Codex 문서에 반영한다.
+- 변경: `model-routing.md`의 기본 원칙·역할 기준·구현/승격/검수 절차를 보강했다. `roles.md`, `validation.md`, `harness/failure-cases.md`에 같은 규칙과 위반 기준을 연결했다. 기존 `.claude/settings.local.json` 변경은 사용자 변경으로 유지했다.
+- 검증: `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `git diff --check` 통과. `bash scripts/validate-docs.sh`는 Windows 줄바꿈(CRLF)으로 인해 `set -\r` 오류가 발생해 실행하지 못했다.
+- 남은 작업: 없음.
+- 주의 사항: 실제 모델 ID와 지원 추론 강도는 현재 환경에서 확인 가능한 값만 사용한다. 고위험 작업의 사람 승인과 독립 검토는 모델 승격만으로 대체하지 않는다.
+
 ### 2026-09-15 (Codex 자동 위임 판단)
 
 - 목표: 사용자가 매번 요청하지 않아도 Codex가 작업 규모, 독립성, 위험도에 따라 서브에이전트 위임과 현재 환경의 모델·추론 강도를 자율 선택하도록 한다.
@@ -50,10 +58,3 @@
 - 남은 작업: 없음.
 - 주의 사항: 사용자가 merge/rebase까지 명시하더라도 원격 이력 변경이나 충돌 해결이 포함되면 별도 승인과 현재 변경 보호 확인 없이는 진행하지 않는다.
 
-### 2026-08-27 (nested ai-agents 부모 진입점 자동 생성 보강)
-
-- 목표: `ai-agents/` 디렉터리를 프로젝트 루트 안에 넣어 쓰는 경우에도 Codex가 한 번 지침을 읽은 뒤 부모 루트의 `AGENTS.md`를 자동으로 보강할 수 있게 한다.
-- 변경: `scripts/install-parent-entrypoints.mjs`를 추가해 부모 루트에 얇은 `AGENTS.md`/`CLAUDE.md` 포인터를 생성하도록 했다. 기존 파일은 덮어쓰지 않으며, 부모가 프로젝트 루트처럼 보이지 않으면 생성하지 않는다. 루트 `AGENTS.md`/`CLAUDE.md`, Codex/Claude `AGENT.md`, `project-rules.md`, `validation.md`, `README.md`, 기존 부트스트랩 스크립트와 문서 검증 스크립트를 같은 기준으로 갱신했다.
-- 검증: 임시 nested 프로젝트에서 `node .../install-parent-entrypoints.mjs` 생성/재실행 skip 동작을 확인했다. `bash scripts/validate-docs.sh`, `node scripts/validate-harness.mjs`, `node scripts/test-evaluator.mjs`, `node scripts/ensure-entrypoints.mjs`, `git diff --check` 통과.
-- 남은 작업: 실제 다른 프로젝트 루트에 `ai-agents/`를 넣고 Codex가 처음 읽는 세션에서 부모 루트 진입점 생성이 기대대로 작동하는지 사례를 확인할 수 있다.
-- 주의 사항: 스크립트는 부모 루트에 쓰는 작업이므로 Codex 파일시스템 정책이 허용하는 경우에만 실행된다. 기존 `AGENTS.md`/`CLAUDE.md`가 있으면 내용을 병합하지 않고 건너뛴다.

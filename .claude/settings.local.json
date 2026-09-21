@@ -31,7 +31,8 @@
       "Bash(python3 -c ' *)",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('.claude/settings.local.json','utf8'\\)\\); console.log\\('valid json'\\)\")",
       "Bash(node -c scripts/validate-docs.sh)",
-      "Bash(bash -n scripts/validate-docs.sh)"
+      "Bash(bash -n scripts/validate-docs.sh)",
+      "Bash(git rev-list *)"
     ]
   }
 }
