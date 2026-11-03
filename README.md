@@ -56,26 +56,25 @@ node scripts/test-evaluator.mjs
 
 같은 검사는 `.github/workflows/validate-docs.yml`을 통해 `master` 대상 push와 PR에서도 자동 실행됩니다.
 
-## 복사 후 부트스트랩
+## 다른 프로젝트에 적용하기
 
-이 폴더를 다른 프로젝트로 복사해 쓸 때 루트 진입 문서와 기본 Codex 에이전트가 빠졌다면 아래 명령으로 생성합니다. 이미 있는 파일은 덮어쓰지 않습니다.
-
-```sh
-node scripts/bootstrap-project-root.mjs
-```
-
-생성 대상은 Codex용 `AGENTS.md`, Claude Code용 `CLAUDE.md`, 그리고 `.codex/agents/`와 `.claude/agents/`의 기본 토론 에이전트 세트입니다.
-
-루트 진입 문서만 필요하면 아래 명령을 사용할 수 있습니다.
+다른 프로젝트에 이 폴더를 직접 복사하지 않습니다. 이 저장소 세션에서 대상 프로젝트로 한 방향으로 동기화합니다. 대상 목록은 `sync-targets.json`에 있습니다.
 
 ```sh
-node scripts/ensure-entrypoints.mjs
+node scripts/sync.mjs --dry-run          # 바뀔 내용과 경고를 먼저 확인
+node scripts/sync.mjs                    # 모든 대상에 적용
+node scripts/sync.mjs auto-simulate      # 일부 대상만
 ```
 
-`ai-agents/` 디렉터리 자체를 프로젝트 루트 안에 넣어 쓰는 경우에는 부모 루트의 자동 진입 문서가 필요합니다. Codex나 Claude가 `ai-agents` 안의 지침을 한 번이라도 읽었고 부모 루트에 `AGENTS.md` 또는 `CLAUDE.md`가 없다면 아래 명령으로 부모 루트에 얇은 포인터 문서를 생성합니다. 이미 있는 파일은 덮어쓰지 않으며, 부모 폴더가 프로젝트 루트처럼 보이지 않으면 생성하지 않습니다.
+대상 프로젝트는 아래 모양이 됩니다.
 
-```sh
-node scripts/install-parent-entrypoints.mjs
-```
+| 위치 | 소유 | 동기화 동작 |
+| --- | --- | --- |
+| `ai-agents/` | 원본(읽기 전용 사본) | `global/`, `local/_template/` 등을 원본으로 덮어쓴다. 원본 이력에 있던 낡은 파일은 지우고, 모르는 파일은 남기고 경고한다. |
+| `CLAUDE.md`, `AGENTS.md` | 프로젝트 + 관리 블록 | `<!-- ai-agents:start -->`~`end` 블록만 갱신한다. Claude 블록은 `@ai-agents/global/models/claude/AGENT.md`, `@docs/agents/context-map.md`를 import한다. |
+| `.claude/agents`, `.claude/hooks`, `.codex/agents` | 원본 설치 | 원본 파일을 설치한다. 원본 이력에 없는 사용자 수정본은 건너뛴다. `.claude/settings.json`에는 hook만 병합한다. |
+| `docs/agents/` | 프로젝트(local 하네스) | 없을 때 템플릿 뼈대만 만든다. 옛 위치 `ai-agents/local/<project>/`에 있으면 한 번 옮기고 경로를 고친다. 문서가 40KB를 넘거나 `handoff-log.md` 기록이 5건을 넘으면 경고한다. |
+
+global 문서에 나오는 `local/<project-name>/`는 설치된 프로젝트에서 `docs/agents/`를 뜻합니다. 동기화 로직의 회귀 테스트는 `node scripts/test-sync.mjs`입니다.
 
 현재 저장소는 문서 정책과 정적 평가 계약까지 제공하며, 모델 호출, checkpoint 저장, trace 수집, queue, 배포를 수행하는 프로덕션 런타임은 포함하지 않습니다.

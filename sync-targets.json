@@ -1,0 +1,21 @@
+{
+  "description": "scripts/sync.mjs가 global을 한 방향으로 동기화할 대상 프로젝트. 경로는 이 저장소 기준 상대 경로다.",
+  "targets": [
+    "../auto-simulate",
+    "../auto-match",
+    "../auto-trader",
+    "../chart-manager",
+    "../chart-collector-py",
+    "../event-notifier",
+    "../simulation-reporter",
+    "../label-analyzer",
+    "../nyamlog",
+    "../ilililissue",
+    "../../_Project/fms2",
+    "../../_Project/fms3",
+    "../../_Project/fms-lb",
+    "../../_Project/fms-daeduck",
+    "../../_Project/fms-ygone",
+    "../../_Project/fms-shinsung"
+  ]
+}

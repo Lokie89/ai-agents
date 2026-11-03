@@ -24,3 +24,6 @@ jobs:
 
       - name: Run evaluator regression tests
         run: node scripts/test-evaluator.mjs
+
+      - name: Run sync regression tests
+        run: node scripts/test-sync.mjs
