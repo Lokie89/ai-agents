@@ -165,14 +165,25 @@ function projectTextFiles(targetRoot) {
     && existsSync(join(targetRoot, f)) && statSync(join(targetRoot, f)).size < 2 * 1024 * 1024);
 }
 
+// 훅은 명령 문자열이 아니라 가리키는 스크립트(.claude/hooks/<이름>)로 식별한다.
+// 같은 스크립트를 가리키는 대상 훅은 원본이 관리하는 것이므로 원본 명령으로 교체한다(경로 형식 변경 이관).
+const hookScript = (command) => command?.match(/\.claude\/hooks\/[\w.-]+/)?.[0] ?? null;
+
 function mergeSettings(targetText, sourceSettings) {
   const target = targetText === null ? {} : JSON.parse(targetText);
   const hooks = target.hooks ?? {};
   for (const [event, groups] of Object.entries(sourceSettings.hooks ?? {})) {
-    const current = hooks[event] ?? [];
-    const commands = new Set(current.flatMap((g) => (g.hooks ?? []).map((h) => h.command)));
+    let current = hooks[event] ?? [];
     for (const group of groups) {
-      if (!(group.hooks ?? []).every((h) => commands.has(h.command))) current.push(group);
+      const sourceHooks = group.hooks ?? [];
+      const scripts = new Set(sourceHooks.map((h) => hookScript(h.command)).filter(Boolean));
+      const sourceCommands = new Set(sourceHooks.map((h) => h.command));
+      current = current
+        .map((g) => ({...g, hooks: (g.hooks ?? []).filter((h) =>
+          sourceCommands.has(h.command) || !scripts.has(hookScript(h.command)))}))
+        .filter((g) => g.hooks.length > 0);
+      const commands = new Set(current.flatMap((g) => g.hooks.map((h) => h.command)));
+      if (!sourceHooks.every((h) => commands.has(h.command))) current.push(group);
     }
     hooks[event] = current;
   }

@@ -110,6 +110,20 @@ test("루트 .claude는 원본 파일을 설치하되 사용자 수정본은 건
   assert.equal(JSON.parse(read(t, ".claude/settings.json")).hooks.Stop.length, 1);
 });
 
+test("같은 hook 스크립트를 가리키는 옛 명령은 원본 명령으로 교체하고 다른 hook은 유지한다", (t) => {
+  const legacy = (command) => ({hooks: [{type: "command", command}]});
+  write(t, ".claude/settings.json", JSON.stringify({hooks: {Stop: [
+    legacy("bash .claude/hooks/review-replan-check.sh"),
+    legacy("bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/review-replan-check.sh"),
+    legacy("echo user-hook"),
+  ]}}, null, 2));
+  syncTarget(sourceRoot, t, {});
+  const source = JSON.parse(read(sourceRoot, ".claude/settings.json")).hooks.Stop[0].hooks[0].command;
+  const commands = JSON.parse(read(t, ".claude/settings.json")).hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command));
+  assert.deepEqual(commands.sort(), ["echo user-hook", source].sort());
+  assert.ok(source.includes("$CLAUDE_PROJECT_DIR"));
+});
+
 test("local 문서가 너무 크거나 인계 기록이 많으면 경고한다", (t) => {
   write(t, "ai-agents/local/demo/domain-policy.md", "x".repeat(50_000));
   write(t, "ai-agents/local/demo/handoff-log.md",
